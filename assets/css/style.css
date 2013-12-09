@@ -1,0 +1,23 @@
+body {
+  background-image: url("../images/Melamine-wood-002.png");
+  font-family: Georgia;
+}
+h1 {
+  font-size: 32px;
+}
+.tint {
+  width: 100%;
+  background-color: rgba(10,240,10,0.5);
+  height: 100%;
+  padding-top: 84px;
+}
+
+.info {
+  margin: 15px auto;
+  width: 200px;
+  height: 200px;
+  border-radius: 100px;
+  background-image: url("../images/arab_tile_@2X.png");
+  overflow: hidden;
+  text-align: center;
+}
