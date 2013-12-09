@@ -1,23 +1,50 @@
 body {
   background-image: url("../images/Melamine-wood-002.png");
   font-family: Georgia;
+  text-align: center
 }
 h1 {
   font-size: 32px;
 }
+li {
+  display: inline-block;
+  margin: 15px 5%;
+}
 .tint {
   width: 100%;
-  background-color: rgba(10,240,10,0.5);
   height: 100%;
   padding-top: 84px;
 }
-
+.green {
+  background-color: rgba(0,240,10,0.5);
+}
+.magenta {
+  background-color: rgba(255,59,255,0.3);
+  color: rgba(103,59,255,1);
+}
 .info {
-  margin: 15px auto;
   width: 200px;
   height: 200px;
-  border-radius: 100px;
-  background-image: url("../images/arab_tile_@2X.png");
+  border-radius: 20px;
   overflow: hidden;
   text-align: center;
+}
+
+.name {
+  background-image: url("../images/arab_tile_@2X.png");
+  float: none;
+  margin: 15px auto;
+  border-radius: 100px;
+}
+
+.coder {
+   background-image: url("../images/gplaypattern.png");
+}
+
+.puppeteer {
+   background-image: url("../images/norwegian_rose.png");
+}
+
+.skills {
+   background-image: url("../images/greyfloral.png");
 }
