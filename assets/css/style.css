@@ -18,8 +18,9 @@ footer {
   width: 100%;
   background-color: rgba(0,0,0,0.3);
   color: white;
-  position: absolute;
+  position: fixed;
   bottom: 0;
+  margin-top: 25px;
 }
 footer ul li {
   margin: 10px;
@@ -60,6 +61,7 @@ footer ul li {
   line-height: 75px;
   padding: 20px;
   border-radius: 10px;
+  margin-bottom: 70px;
 }
 .info {
   /*min-width: 200px;*/
@@ -119,19 +121,22 @@ footer ul li {
 }
 .img {
   display: inline-block;
-  width: 40%;
+  width: 400px;
   font-size: 20px;
   line-height: 20px;
+  text-align: center;
+  margin: 0px auto;
 }
 .img img {
   width: 100%;
+
 }
 .description {
   display: inline-block;
-  width: 50%;
+  width: 500px;
   font-size: 30px;
   line-height: 35px;
-  margin: 10px;
+  margin: 0px auto;
 }
 #left {
   border-right: 2px solid white;
@@ -156,4 +161,7 @@ footer ul li {
   text-align: right;
   font-size: 16px;
   line-height: 16px;
+}
+#clearfix {
+  position: fixed;
 }
