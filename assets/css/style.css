@@ -56,6 +56,10 @@ a {
 .green {
   background-color: rgba(0,240,10,0.2);
   color: black;
+  font-size: 18px;
+}
+.hover .green {
+  background-color: #004703;
 }
 .magenta {
   /*background-color: rgba(255,59,255,0.3);*/
@@ -64,10 +68,13 @@ a {
   color: white;
   font-size: 18px;
 }
-.label a {
+.hover .magenta {
+  background-color: rgba(105,12,122,1);
+}
+.label strong {
   font-size: 50px;
-  color: rgba(103,59,255,1);
-  text-decoration: none;
+  /*color: rgba(103,59,255,1);*/
+  color: rgba(105,12,122,1);
 }
 .label {
   background-color: rgba(0,0,0,0.3);
