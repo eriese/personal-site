@@ -33,7 +33,26 @@ setSize = function() {
 
 setSize();
 $(window).resize(setSize);
+$(".footer").on("mouseover", function() {
+  $(".footer").addClass("hover");
+});
+$(".footer").on("mouseout", function() {
+  $(".footer").removeClass("hover");
+});
 
+$("#mouffe").on("click", function(e){
+  var video = $("#mouffe")[0];
+  if (video.paused) {
+    $(".img").css("width", "95%");
+    $("#mouffe").css({"width": "90%"});
+    video.play();
+  }
+  else {
+    video.pause();
+    $(".img").css("width", "");
+    $("#mouffe").css({"width": "100%"});
+  }
+} );
 // switchout = function(e) {
 //   e.preventDefault();
 //   var url = alert($(this).find("a").attr("href"));
