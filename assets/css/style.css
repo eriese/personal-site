@@ -22,7 +22,7 @@ a {
 }
 .footer ul li {
   text-align: center;
-  width: 40%;
+  width: 30%;
 }
 .footer.hover ul {
   display: inline;
@@ -44,6 +44,9 @@ a {
 }
 .footer ul {
   display: none;
+}
+.footer a {
+  color: white;
 }
 .text {
   /*color: #690C7A;*/
