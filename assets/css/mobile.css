@@ -1,0 +1,33 @@
+@media (max-width: 750px) {
+  table {
+    display: none;
+  }
+  .info {
+    width: 70%;
+    height: 70px;
+  }
+  .tint {
+    padding: 15px 0px;
+  }
+  .img {
+    width: 95%;
+  }
+  .description {
+    width: 95%;
+  }
+  #up-arrow {
+    margin-top: 15px;
+    margin-left: 15px;
+  }
+  #up-arrow img {
+    width: 50px;
+  }
+}
+@media (max-width: 1140) {
+  .img {
+    width: 95%;
+  }
+  .description {
+    width: 95%;
+  }
+}

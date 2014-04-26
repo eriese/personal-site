@@ -158,6 +158,9 @@ a {
 .img img {
   width: 100%;
 }
+video {
+  width: 100%;
+}
 .description {
   display: inline-block;
   width: 500px;
