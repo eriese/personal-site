@@ -25,6 +25,12 @@
   .footer li {
     display: block;
   }
+  .label {
+    font-size: 25px;
+  }
+  .label strong {
+    font-size: 28px;
+  }
 }
 @media (max-width: 1140) {
   .img {
