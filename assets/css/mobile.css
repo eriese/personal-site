@@ -27,6 +27,7 @@
   }
   .label {
     font-size: 25px;
+    line-height: 40px;
   }
   .label strong {
     font-size: 28px;
