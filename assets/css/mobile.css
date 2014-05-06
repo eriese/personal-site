@@ -5,6 +5,10 @@
   .info {
     width: 70%;
     height: 70px;
+    margin-top: 250px;
+  }
+  .info ~ .info{
+    margin-top: 15px;
   }
   .tint {
     padding: 15px 0px;
@@ -16,8 +20,8 @@
     width: 95%;
   }
   #up-arrow {
-    margin-top: 15px;
-    margin-left: 15px;
+    top: 15px;
+    left: 15px;
   }
   #up-arrow img {
     width: 50px;
@@ -26,6 +30,7 @@
     display: block;
   }
   .label {
+    margin-top: 250px;
     font-size: 25px;
     line-height: 40px;
   }

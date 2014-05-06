@@ -3,8 +3,12 @@ body {
   font-family: Georgia;
   text-align: center;
 }
+table {
+
+}
 h1 {
   font-size: 32px;
+  text-transform: capitalize;
   /*padding: 75px 20px;*/
 }
 li {
@@ -92,12 +96,7 @@ a {
   margin-bottom: 80px;
 }
 .info {
-  /*min-width: 200px;*/
   margin: 15px;
-  /*height: 200px;*/
-  /*border-radius: 5px;
-  border-bottom-right-radius: 20px;
-  border-top-left-radius: 10px;*/
   border-radius: 100px;
   width: 15%;
   overflow: hidden;
@@ -107,9 +106,12 @@ a {
   text-transform: uppercase;
 }
 .name {
+  position: absolute;
+  top: 0px;
+  left: 50%;
   display: block;
-  background-image: url("../images/pattern_02.jpg");
-  margin: 15px auto;
+  margin: 15px;
+  margin-left: -100px;
   border-radius: 100px;
   width: 200px;
   height: 200px;
@@ -141,11 +143,15 @@ a {
   background-image: url("../images/pattern_02.jpg");
   background-size: cover;
 }
+.enoch {
+  background-image: url("../images/pattern_02.jpg");
+}
 .bottom {
   border-top: 2px solid white;
   border-left: 2px solid white;
   border-right: 2px solid white;
   height: 80px;
+  margin-top: -2px;
 }
 .img {
   display: inline-block;
@@ -171,16 +177,18 @@ video {
 #left {
   border-right: 2px solid white;
   width: 50%;
-  height: 80px;
+  /*height: 80px;*/
 }
 #right {
   width: 50%;
 }
 #top {
-  width: 100%;
+  border-bottom: 2px solid white;
+  height: 80px;
+  margin: 250px auto -2px auto;
 }
 #bottom {
-  margin: 0px auto;
+  margin: -2px auto;
 }
 #container {
   width: 95%;
@@ -198,6 +206,23 @@ video {
 
 #up-arrow {
   position: absolute;
-  margin-top: 50px;
-  margin-left: 50px;
+  top: 50px;
+  left: 50px;
 }
+
+.hidden {
+  display: none;
+}
+
+.to-scroll#top {
+  height: 0px;
+  /*opacity: 0;*/
+  width: 0px;
+}
+
+.to-scroll .bottom {
+  /*opacity: 0;*/
+  height: 0px;
+}
+
+
