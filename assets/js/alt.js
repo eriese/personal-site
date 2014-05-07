@@ -131,18 +131,30 @@ getPage = function(url) {
 }
 $(window).on("hashchange", function(e) {
   var uncutUrl = window.location.hash.replace("#", "");
-  urlArray = uncutUrl.split("/");
-  url = urlArray.slice(-1)[0];
-  if (url != "" ) {
-    $.each(urlArray, function(index, url){
-      if (cache[url]) {
-        var clickDiv = $("a[href='" + url + ".html']").parent();
-        changeOut(clickDiv, cache[url]);
+  var urlArray = uncutUrl.split("/");
+  var url = urlArray.slice(-1)[0];
+  var exists = $("a[href='" + url + ".html']")
+  if (exists.length < 1) {
+    $.each(urlArray, function(index, serialUrl) {
+      setTimeout(function() {
+      if (cache[serialUrl]) {
+        var clickDiv = $("a[href='" + serialUrl + ".html']").parent();
+        changeOut(clickDiv, cache[serialUrl]);
       }
       else {
-        getPage(url);
+        getPage(serialUrl);
       }
+      }, 3550 * index);
     });
+  }
+  else if (exists.first().parent().hasClass("info")){
+    if (cache[url]) {
+      var clickDiv = $("a[href='" + url + ".html']").parent();
+        changeOut(clickDiv, cache[url]);
+    }
+    else {
+      getPage(url);
+    }
   }
 });
 
@@ -178,6 +190,7 @@ var changeOut = function($thisDiv, $newPage) {
         var label = blankDiv.find(".label");
         table.addClass("to-scroll");
         $("body").append(table);
+        // debugger
         if (label.length > 0) {
           table.animate({height: 80}, 500, function() {
             table.removeClass("to-scroll");
