@@ -1,5 +1,3 @@
-ARROWDIV = $("<div id='up-arrow'><a href='index.html'><img src='assets/images/arrow-up.png' alt='previous level'></a></div>")
-
 setSize = function() {
   var size;
   if($(window).width() > 750) {
@@ -24,7 +22,12 @@ setSize = function() {
 
   $("h1").parent().css("padding-top", $("h1").parent().height() / 2 - $("h1").height() / 2);
 }
-
+var coverBases = function() {
+  setSize();
+  changeoutListener();
+  addInfoListeners();
+  addVideoListeners();
+}
 var changeoutListener = function() {
   if ($(window).width() > 750 && !listenerCheck) {
     $(".info").click(infoClick);
@@ -62,12 +65,6 @@ var addInfoListeners = function() {
   });
 }
 listenerCheck = false;
-var coverBases = function() {
-  setSize();
-  changeoutListener();
-  addInfoListeners();
-  addVideoListeners();
-}
 
 $(window).on({ready: coverBases,
  resize: coverBases});
@@ -79,13 +76,11 @@ $(".footer").on("mouseout", function() {
 });
 
 var infoClick = function(e) {
-
   $thisDiv = $(this);
   if($thisDiv.find("a").attr("href").indexOf("http://") < 0) {
     e.preventDefault();
     var currHash = window.location.hash;
     var url = $thisDiv.find("a").attr("href").replace(".html", "");
-    // debugger
     if (currHash == "") {
       window.location.hash = url;
     }
@@ -104,16 +99,15 @@ var fixInfoDivs = function() {
     $(div).css(posArray[index]);
   });
 }
-// (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-//   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-//   m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-// })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-// ga('create', 'UA-46992121-1', 'enochriese.com');
-// ga('send', 'pageview');
+/* (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-46992121-1', 'enochriese.com');
+ga('send', 'pageview'); */
 var cache = {
   // If url is '' (no fragment), display this div's content.
-  '': $('.default')
+  '': ""
 };
 getPage = function(url) {
   var $thisDiv = $("a[href='" + url + ".html']").parent();
@@ -121,7 +115,6 @@ getPage = function(url) {
     url: url + ".html",
     type: "GET",
     dataType : "html",
-
   }).done(function(data) {
     var storageDiv = $("<div>");
     storageDiv.append(data);
@@ -131,30 +124,62 @@ getPage = function(url) {
 }
 $(window).on("hashchange", function(e) {
   var uncutUrl = window.location.hash.replace("#", "");
+  if (uncutUrl == "") {uncutUrl = "index"};
   var urlArray = uncutUrl.split("/");
   var url = urlArray.slice(-1)[0];
   var exists = $("a[href='" + url + ".html']")
   if (exists.length < 1) {
     $.each(urlArray, function(index, serialUrl) {
-      setTimeout(function() {
-      if (cache[serialUrl]) {
-        var clickDiv = $("a[href='" + serialUrl + ".html']").parent();
-        changeOut(clickDiv, cache[serialUrl]);
-      }
-      else {
-        getPage(serialUrl);
-      }
-      }, 3550 * index);
+        setTimeout(function() {
+        // if (cache[serialUrl]) {
+        //   var clickDiv = $("a[href='" + serialUrl + ".html']").parent();
+        //   changeOut(clickDiv, cache[serialUrl]);
+        // }
+        // else {
+          getPage(serialUrl);
+        // }
+        }, 3550 * index);
     });
   }
   else if (exists.first().parent().hasClass("info")){
-    if (cache[url]) {
-      var clickDiv = $("a[href='" + url + ".html']").parent();
-        changeOut(clickDiv, cache[url]);
-    }
-    else {
+    // if (cache[url]) {
+    //   var clickDiv = $("a[href='" + url + ".html']").parent();
+    //     changeOut(clickDiv, cache[url]);
+    // }
+    // else {
       getPage(url);
-    }
+    // }
+  }
+  else if (exists.last().parent().attr("id")=="up-arrow") {
+    var nameDiv = $(".name").first();
+    var everythingElse = $("body").children().not($(".footer")).not(nameDiv);
+    $.when(everythingElse.fadeOut(500)).done( function() {
+      everythingElse.remove();
+    // if (cache[url]) {
+      $.ajax({
+          url: url + ".html",
+          type: "GET",
+          dataType : "html",
+        }).done(function(data) {
+          var storageDiv = $("<div>");
+          storageDiv.append(data);
+          var newName = storageDiv.find(".name")
+          var table = storageDiv.find("table");
+          var info = storageDiv.find(".info");
+          var upArrow = storageDiv.find("#up-arrow")
+          $("body").append(newName).append(table).append(info).append(upArrow);
+          coverBases();
+          nameDiv.fadeOut(300, function() {
+            nameDiv.remove();
+            coverBases();
+          });
+        });
+      });
+      // debugger
+    // }
+    // else {
+
+    // }
   }
 });
 
