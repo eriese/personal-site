@@ -2,42 +2,35 @@ setSize = function() {
   var size;
   if($(window).width() > 750) {
     size = $("body").width() * 0.15;
-    $(".info").css("height", size);
-    $(".info").css("width", size);
+    $(".info").css({height: size, width: size});
     $.each($(".tint"), function(index, div) {
-      $(div).css("padding-top", $(div).height() / 2 - $(div).find(".text").height() / 2);
+      $(div).css("padding-top", centerText($(div), ".text"));
     });
     if ($(".info")[0]) {
-      var margin = $(".info").css("margin");
-      var marginNum = margin.replace("px", "");
-      $(".bottom").width(size + parseInt(marginNum) * 2);
+      var margin = $(".info").css("margin").replace("px", "");
+      $(".bottom").width(size + parseInt(margin) * 2);
       $("#top").width($("#bottom").width());
     }
   }
   else {
-    $(".info").css("width", "70%");
-    $(".info").css("height", "50px");
-    $(".tint").css("padding", "15px 0px");
+    $(".info, .tint").removeAttr("style");
   }
-
-  $("h1").parent().css("padding-top", $("h1").parent().height() / 2 - $("h1").height() / 2);
+  $("h1").parent().css("padding-top", centerText($("h1").parent(), "h1"));
 }
-var coverBases = function() {
-  setSize();
-  changeoutListener();
-  addInfoListeners();
-  addVideoListeners();
+var centerText = function($div, textSelector) {
+  return ($div.height() - $div.find(textSelector).height()) / 2
 }
 var changeoutListener = function() {
   if ($(window).width() > 750 && !listenerCheck) {
     $(".info").click(infoClick);
+    $("#up-arrow").click(infoClick);
     listenerCheck = true;
   }
   else if($(window).width() < 750 && listenerCheck) {
     $(".info").off();
+    $("#up-arrow").off();
     listenerCheck = false;
   };
-  return listenerCheck;
 }
 var addVideoListeners = function() {
   $("video").on("click", function(e){
@@ -65,14 +58,23 @@ var addInfoListeners = function() {
   });
 }
 listenerCheck = false;
-
-$(window).on({ready: coverBases,
- resize: coverBases});
-$(".footer").on("mouseover", function() {
-  $(".footer").addClass("hover");
+var coverBases = function() {
+  setSize();
+  changeoutListener();
+  addInfoListeners();
+  addVideoListeners();
+}
+$(window).on({
+  ready: coverBases,
+  resize: coverBases,
 });
-$(".footer").on("mouseout", function() {
-  $(".footer").removeClass("hover");
+$(".footer").on({
+  mouseover: function() {
+    $(".footer").addClass("hover");
+  },
+  mouseout: function() {
+    $(".footer").removeClass("hover");
+  }
 });
 
 var infoClick = function(e) {
@@ -84,8 +86,13 @@ var infoClick = function(e) {
     if (currHash == "") {
       window.location.hash = url;
     }
-    else{
+    else if ($thisDiv.hasClass("info")) {
       window.location.hash = currHash + "/" + url;
+    }
+    else {
+      hashArray = currHash.split("/");
+      hashArray.pop()
+      window.location.hash = hashArray.join("/")
     }
   }
 }
@@ -99,17 +106,7 @@ var fixInfoDivs = function() {
     $(div).css(posArray[index]);
   });
 }
-/* (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-ga('create', 'UA-46992121-1', 'enochriese.com');
-ga('send', 'pageview'); */
-var cache = {
-  // If url is '' (no fragment), display this div's content.
-  '': ""
-};
-getPage = function(url) {
+var getPage = function(url) {
   var $thisDiv = $("a[href='" + url + ".html']").parent();
   $.ajax({
     url: url + ".html",
@@ -118,80 +115,12 @@ getPage = function(url) {
   }).done(function(data) {
     var storageDiv = $("<div>");
     storageDiv.append(data);
-    cache[url] = storageDiv;
     changeOut($thisDiv, storageDiv);
   });
 }
-$(window).on("hashchange", function(e) {
-  var uncutUrl = window.location.hash.replace("#", "");
-  if (uncutUrl == "") {uncutUrl = "index"};
-  var urlArray = uncutUrl.split("/");
-  var url = urlArray.slice(-1)[0];
-  var exists = $("a[href='" + url + ".html']")
-  if (exists.length < 1) {
-    $.each(urlArray, function(index, serialUrl) {
-        setTimeout(function() {
-        // if (cache[serialUrl]) {
-        //   var clickDiv = $("a[href='" + serialUrl + ".html']").parent();
-        //   changeOut(clickDiv, cache[serialUrl]);
-        // }
-        // else {
-          getPage(serialUrl);
-        // }
-        }, 3550 * index);
-    });
-  }
-  else if (exists.first().parent().hasClass("info")){
-    // if (cache[url]) {
-    //   var clickDiv = $("a[href='" + url + ".html']").parent();
-    //     changeOut(clickDiv, cache[url]);
-    // }
-    // else {
-      getPage(url);
-    // }
-  }
-  else if (exists.last().parent().attr("id")=="up-arrow") {
-    var nameDiv = $(".name").first();
-    var everythingElse = $("body").children().not($(".footer")).not(nameDiv);
-    $.when(everythingElse.fadeOut(500)).done( function() {
-      everythingElse.remove();
-    // if (cache[url]) {
-      $.ajax({
-          url: url + ".html",
-          type: "GET",
-          dataType : "html",
-        }).done(function(data) {
-          var storageDiv = $("<div>");
-          storageDiv.append(data);
-          var newName = storageDiv.find(".name")
-          var table = storageDiv.find("table");
-          var info = storageDiv.find(".info");
-          var upArrow = storageDiv.find("#up-arrow")
-          $("body").append(newName).append(table).append(info).append(upArrow);
-          coverBases();
-          nameDiv.fadeOut(300, function() {
-            nameDiv.remove();
-            coverBases();
-          });
-        });
-      });
-      // debugger
-    // }
-    // else {
-
-    // }
-  }
-});
-
-$(window).trigger("hashchange");
-
-
 var changeOut = function($thisDiv, $newPage) {
   listenerCheck = false;
   var blankDiv = $newPage;
-  var storageDiv = $("<div>");
-  // blankDiv.append(data);
-  var pos = $thisDiv.position();
   fixInfoDivs();
   var textContent = $thisDiv.find(".text").text();
   var backgroundClass = blankDiv.find(".name").attr("class");
@@ -199,15 +128,15 @@ var changeOut = function($thisDiv, $newPage) {
   .removeClass("hover info")
   .css({"margin-left": 15})
   .find(".tint").html("<h1>" + textContent + "</h1>")
-  .css({"padding-top": $thisDiv.height() / 2 - $thisDiv.find("h1").height() / 2});
+  .css({"padding-top": centerText($thisDiv, "h1")});
   $thisDiv.animate({height: 200, width: 200, "margin-left": 11, "margin-top": 19}, 500, function() {
     $thisDiv.off()
     .find("a").attr("href", "index.html")
-    $thisDiv.find(".tint").css({"padding-top": $thisDiv.height() / 2 - $thisDiv.find("h1").height() / 2});
+    .find(".tint").css({"padding-top": centerText($thisDiv, "h1")});
     var everythingElse = $("body").children().not($thisDiv).not(".footer")
     $.when(everythingElse.fadeOut(300)).done(function() {
       $thisDiv.animate({top: 0, left: "50%", "margin-left": -100}, 700, function() {
-        storageDiv.append(everythingElse.remove());
+        everythingElse.remove();
         $("body").prepend(blankDiv.find("#up-arrow").hide());
         $("#up-arrow").fadeIn();
         var table = blankDiv.find("table");
@@ -215,7 +144,6 @@ var changeOut = function($thisDiv, $newPage) {
         var label = blankDiv.find(".label");
         table.addClass("to-scroll");
         $("body").append(table);
-        // debugger
         if (label.length > 0) {
           table.animate({height: 80}, 500, function() {
             table.removeClass("to-scroll");
@@ -243,10 +171,53 @@ var changeOut = function($thisDiv, $newPage) {
           });
         };
       });
-});
-});
-return storageDiv;
+    });
+  });
 }
+$(window).on("hashchange", function(e) {
+  var uncutUrl = window.location.hash.replace("#", "");
+  if (uncutUrl == "") {uncutUrl = "index"};
+  var urlArray = uncutUrl.split("/");
+  var url = urlArray.slice(-1)[0];
+  var exists = $("a[href='" + url + ".html']")
+  if (exists.first().parent().attr("id")=="up-arrow" || url == "index") {
+    var nameDiv = $(".name").first();
+    var everythingElse = $("body").children().not($(".footer")).not(nameDiv);
+    $.when(everythingElse.fadeOut(500)).done( function() {
+      everythingElse.remove();
+      $.ajax({
+        url: url + ".html",
+        type: "GET",
+        dataType : "html",
+      }).done(function(data) {
+        var storageDiv = $("<div>");
+        storageDiv.append(data);
+        var newName = storageDiv.find(".name")
+        var table = storageDiv.find("table");
+        var info = storageDiv.find(".info");
+        var upArrow = storageDiv.find("#up-arrow")
+        $("body").append(newName).append(table).append(info).append(upArrow);
+        coverBases();
+        nameDiv.fadeOut(300, function() {
+          nameDiv.remove();
+          listenerCheck = false
+          coverBases();
+        });
+      });
+    });
+  }
+  else if (exists.length < 1) {
+    $.each(urlArray, function(index, serialUrl) {
+      setTimeout(function() {
+          getPage(serialUrl);
+      }, 3550 * index);
+    });
+  }
+  else if (exists.first().parent().hasClass("info")){
+      getPage(url);
+  }
+});
+$(window).trigger("hashchange");
 
 
 
