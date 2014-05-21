@@ -29,7 +29,6 @@ setSize = function() {
 }
 var centerText = function(div) {
   //calculate the necessary padding-top height for text to be centered and set it
-  debugger
   var toCenter;
   if(div.hasClass("tint")) {
     toCenter = div;
@@ -145,6 +144,7 @@ var fixInfoDivs = function() {
     $(div).css(posArray[index]);
   });
 }
+var changeTime = 600;
 var changeDown = function(url) {
   // this is the animation and ajax
   // for going downwards in the chart hierarchy
@@ -168,8 +168,9 @@ var changeDown = function(url) {
 
     // the info divs that had listeners on them have been removed.
     // listeners need to reset
-    listenerCheck = false;
-
+    if (!$.fx.off) {
+      listenerCheck = false;
+    }
     // position: relative items are hard to animate.
     // if I made just the one div I need to move position: absolute,
     // the others would move to maintain proper centering,
@@ -189,7 +190,7 @@ var changeDown = function(url) {
     .css({"margin-left": 15})
     // grow div to size of name div, change margins
     // so it appears to grow in place
-    .animate({height: 200, width: 200, "margin-left": 11, "margin-top": 19}, 500, function() {
+    .animate({height: 200, width: 200, "margin-left": 11, "margin-top": 19}, changeTime, function() {
       centerText($thisDiv)
       // turn off click listener on this div;
       // it is no longer and info div and
@@ -200,10 +201,10 @@ var changeDown = function(url) {
       var everythingElse = $("body").children().not($thisDiv).not(".footer")
       // use a .done() to prevent multiple calls
       // to the same function for each item in everythingElse
-      $.when(everythingElse.fadeOut(300)).done(function() {
+      $.when(everythingElse.fadeOut(changeTime * 0.6 )).done(function() {
         // once everythingElse is gone,
         // slide new name div into position
-        $thisDiv.animate({top: 0, left: "50%", "margin-left": -100}, 700, function() {
+        $thisDiv.animate({top: 0, left: "50%", "margin-left": -100}, changeTime * 2, function() {
           // clear html clutter
           everythingElse.remove();
           //find all necessary parts within ajaxed html
@@ -221,7 +222,7 @@ var changeDown = function(url) {
           if (label.length > 0) {
             // if there is a label instead of info divs,
             // there is only one table element to draw downward
-            table.animate({height: 80}, 500, function() {
+            table.animate({height: 80}, changeTime, function() {
               table.removeClass("to-scroll");
               // to create the unfurling effect on the label,
               // the wrapper needs to be hidden separately so that
@@ -230,7 +231,7 @@ var changeDown = function(url) {
               wrapper.hide();
               $("body").append(label.hide());
               label.show();
-              wrapper.slideDown(2000);
+              wrapper.slideDown(changeTime * 4);
               // always call cover bases at the end.
               // it does what it says.
               coverBases();
@@ -245,24 +246,24 @@ var changeDown = function(url) {
             // because setting the table size would skip animation.
             var scrollWidth = ($("body").width() * 0.15 + parseInt($(".info").css("margin").replace("px", "")) * 2) * (info.length - 1);
             // first draw the table down...
-            $("#top").animate({height: 80}, 500, function() {
+            $("#top").animate({height: 80}, changeTime, function() {
               // then outward
-              $("#left").animate({width: scrollWidth/2}, 500, function() {
+              $("#left").animate({width: scrollWidth/2}, changeTime, function() {
                 $("#top").removeClass("to-scroll");
                 // We must call setSize() here so that the
                 // .bottom graph spaces properly
                 setSize();
-                $("#bottom").animate({height: 80}, 500, function() {
-                  info.fadeIn(500);
+                $("#bottom").animate({height: 80}, changeTime, function() {
+                  info.fadeIn(changeTime);
                   coverBases()
                 });
               });
             });
           };
         });
-      });
-    });
-  });
+});
+});
+});
 }
 var changeUp = function(url) {
   // this is the animation and ajax for going upwards
@@ -275,86 +276,102 @@ var changeUp = function(url) {
     dataType : "html",
   }).done(function(data) {
     // ANIMATION STILL UNDER CONSTRUCTION
+    if (!$.fx.off) {
+      listenerCheck = false;
+    }
     var nameDiv = $(".name").first();
-    var everythingElse = $("body").children().not($(".footer")).not(nameDiv);
+    var everythingElse = $("body").children().not($(".footer")).not(nameDiv).not("#up-arrow")
     var storageDiv = $("<div>");
     storageDiv.append(data);
-    $.when(everythingElse.fadeOut(500)).done( function() {
+    // $("#up-arrow").fadeOut(700);
+    everythingElse.fadeOut(changeTime * 1.5);
+    setTimeout(function() {
+      debugger
       everythingElse.remove();
+      // $("#up-arrow").remove();
       var textToFind = nameDiv.text().trim();
       var newName = storageDiv.find(".name").css({opacity: 0});
       var table = storageDiv.find("table").css({opacity: 0});
       var info = storageDiv.find(".info").css({opacity: 0});
-      var upArrow = storageDiv.find("#up-arrow").css({opacity: 0});
-      $("body").append(newName).append(table).append(info).append(upArrow);
+      var pageUp = storageDiv.find("#up-arrow").find("a").attr("href");
+      $("body").append(newName).append(table).append(info);
+      $("#up-arrow").find("a").attr("href", pageUp);
       coverBases();
       var newPos = $(".info:contains('" + textToFind + "')").position();
-      debugger
-      nameDiv.removeClass().addClass("info");
+      nameDiv.removeClass()
+      .addClass("info")
+      .css({position: "absolute", left: "50%", "margin-left": -100, top: 0 });
       setSize();
-      debugger
-      nameDiv.animate({top: newPos.top, left: newPos.left, "margin-left": 15, "margin-top": 15}, 1500, function() {
-        nameDiv.fadeOut(300, function() {
-          nameDiv.remove();
-        });
+      nameDiv.animate({top: newPos.top, left: newPos.left, "margin-left": 15, "margin-top": 15}, changeTime * 3, function() {
         listenerCheck = false
         coverBases();
-        $(".info").animate({opacity: 1}, 500, function() {
+        $(".info").animate({opacity: 1}, changeTime, function() {
+          nameDiv.remove();
           coverBases();
-          $("table").animate({opacity: 1}, 500, function() {
+          $("table").animate({opacity: 1}, changeTime, function() {
             coverBases();
-            $(".name").animate({opacity: 1}, 500);
-            $("#up-arrow").animate({opacity: 1}, 500);
+            $(".name").animate({opacity: 1}, changeTime);
+            $("#up-arrow").animate({opacity: 1}, changeTime);
           });
         });
       });
-    });
+    }, changeTime);
 });
 }
 $(window).on("hashchange", function(e) {
+  $.fx.off = false;
   // whenever the hash is changed,
   // the page content needs to change
   // in order to figure out how the page content needs to change,
   // we need to know what's in the hash
   var uncutUrl = window.location.hash.replace("#", "");
-  if (uncutUrl == "") {uncutUrl = "index"};
-  // we need to be able to iterate through
-  // each part of the hash individually,
-  // so we split it.
-  // if there's only one page referenced in the hash,
-  // the array will simply contain that item
-  var urlArray = uncutUrl.split("/");
-  // we now need to find the last reference in the hash
-  // so that we can compare it to the page content:
-  var url = urlArray.slice(-1)[0];
-  // then we need to see where it exists on the page
-  var exists = $("a[href='" + url + ".html']").parent()
-  if (exists.index($("#up-arrow")) >= 0) {
-    // if the url is attached to the up arrow,
-    // we need to animate up the chart, so we call changeUp().
-    changeUp(url);
+  if ($(":animated").length > 0) {
+    debugger
+    $.fx.off = true;
+
+    // $.delay(500);
   }
-  else if (exists.length < 1) {
-    // if there is no link to the last element in the hash,
-    // that means it is further down the chart
-    // which means for the animation to run properly,
-    // we need to visit the pages in order
-    $.each(urlArray, function(index, serialUrl) {
-      //this timeout means each page waits the amount
-      // of time it takes the previous page to load,
-      // so the animation occurs sequentially through
-      // the chart hierarchy.
-      setTimeout(function() {
-        changeDown(serialUrl);
-      }, 3550 * index);
-    });
-  }
-  else if (exists.first().hasClass("info")){
-    // if the first example of the url is on an info div,
-    // it is one step down the chart,
-    // so it can simply run changeDown()
-    changeDown(url);
-  }
+  setTimeout(function() {
+    debugger
+    if (uncutUrl == "") {uncutUrl = "index"};
+    // we need to be able to iterate through
+    // each part of the hash individually,
+    // so we split it.
+    // if there's only one page referenced in the hash,
+    // the array will simply contain that item
+    var urlArray = uncutUrl.split("/");
+    // we now need to find the last reference in the hash
+    // so that we can compare it to the page content:
+    var url = urlArray.slice(-1)[0];
+    // then we need to see where it exists on the page
+    var exists = $("a[href='" + url + ".html']").parent()
+    if (exists.index($("#up-arrow")) >= 0) {
+      // if the url is attached to the up arrow,
+      // we need to animate up the chart, so we call changeUp().
+      changeUp(url);
+    }
+    else if (exists.length < 1) {
+      // if there is no link to the last element in the hash,
+      // that means it is further down the chart
+      // which means for the animation to run properly,
+      // we need to visit the pages in order
+      $.each(urlArray, function(index, serialUrl) {
+        //this timeout means each page waits the amount
+        // of time it takes the previous page to load,
+        // so the animation occurs sequentially through
+        // the chart hierarchy.
+        setTimeout(function() {
+          changeDown(serialUrl);
+        }, 7.1 * changeTime * index);
+      });
+    }
+    else if (exists.first().hasClass("info")){
+      // if the first example of the url is on an info div,
+      // it is one step down the chart,
+      // so it can simply run changeDown()
+      changeDown(url);
+    }
+  }, 500);
 });
 
 if (window.location.hash != "") {
