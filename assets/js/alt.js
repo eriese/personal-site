@@ -42,15 +42,14 @@ listenerCheck = false;
 var changeoutListener = function() {
   // only attach listeners in fullscreen view.
   // page without AJAX in mobile.
-  if ($(window).width() > 750 && !listenerCheck) {
-    $(".info").click(infoClick);
-    $("#up-arrow").click(infoClick);
-    listenerCheck = true;
+  if ($(window).width() > 750) {
+    $(".info, #up-arrow").off();
+    $(".info, #up-arrow").click(infoClick);
+    addInfoListeners();
   }
-  else if($(window).width() < 750 && listenerCheck) {
+  else if($(window).width() < 750) {
     $(".info").off();
     $("#up-arrow").off();
-    listenerCheck = false;
   };
 }
 var addVideoListeners = function() {
@@ -89,6 +88,7 @@ $(window).on({
   ready: coverBases,
   resize: coverBases,
 });
+coverBases();
 $(".footer").on({
   // this function is separate from the info listeners
   // because they can be called at different times
@@ -144,7 +144,7 @@ var fixInfoDivs = function() {
     $(div).css(posArray[index]);
   });
 }
-var changeTime = 600;
+var changeTime = 1000;
 var changeDown = function(url) {
   // this is the animation and ajax
   // for going downwards in the chart hierarchy
@@ -276,9 +276,6 @@ var changeUp = function(url) {
     dataType : "html",
   }).done(function(data) {
     // ANIMATION STILL UNDER CONSTRUCTION
-    if (!$.fx.off) {
-      listenerCheck = false;
-    }
     var nameDiv = $(".name").first();
     var everythingElse = $("body").children().not($(".footer")).not(nameDiv).not("#up-arrow")
     var storageDiv = $("<div>");
@@ -286,8 +283,8 @@ var changeUp = function(url) {
     // $("#up-arrow").fadeOut(700);
     everythingElse.fadeOut(changeTime * 1.5);
     setTimeout(function() {
-      debugger
       everythingElse.remove();
+      setTimeout(function() {
       // $("#up-arrow").remove();
       var textToFind = nameDiv.text().trim();
       var newName = storageDiv.find(".name").css({opacity: 0});
@@ -298,6 +295,7 @@ var changeUp = function(url) {
       $("#up-arrow").find("a").attr("href", pageUp);
       coverBases();
       var newPos = $(".info:contains('" + textToFind + "')").position();
+      debugger
       nameDiv.removeClass()
       .addClass("info")
       .css({position: "absolute", left: "50%", "margin-left": -100, top: 0 });
@@ -315,47 +313,66 @@ var changeUp = function(url) {
           });
         });
       });
+    }, 200);
     }, changeTime);
 });
 }
+var curUrl;
+var curUrlArray;
+var urlArray;
+var url;
 $(window).on("hashchange", function(e) {
   $.fx.off = false;
+  if ($(":animated").length > 0) {
+    $(":animated").stop(false, true);
+    $.fx.off = true;
+    waitTime = 500;
+  }
   // whenever the hash is changed,
   // the page content needs to change
   // in order to figure out how the page content needs to change,
   // we need to know what's in the hash
+  var waitTime = 200;
   var uncutUrl = window.location.hash.replace("#", "");
-  if ($(":animated").length > 0) {
-    debugger
-    $.fx.off = true;
-
-    // $.delay(500);
+  if (curUrl) {
+    curUrlArray = curUrl.split("/");
   }
-  setTimeout(function() {
-    debugger
-    if (uncutUrl == "") {uncutUrl = "index"};
+  else {
+    curUrlArray = [];
+  }
+  curUrl = uncutUrl;
+  if (uncutUrl == "") {
+    url = "index"
+    urlArray = [];
+  }
+  else {
     // we need to be able to iterate through
     // each part of the hash individually,
     // so we split it.
     // if there's only one page referenced in the hash,
     // the array will simply contain that item
-    var urlArray = uncutUrl.split("/");
+    urlArray = uncutUrl.split("/");
+
     // we now need to find the last reference in the hash
     // so that we can compare it to the page content:
-    var url = urlArray.slice(-1)[0];
-    // then we need to see where it exists on the page
-    var exists = $("a[href='" + url + ".html']").parent()
-    if (exists.index($("#up-arrow")) >= 0) {
-      // if the url is attached to the up arrow,
+    url = urlArray.slice(-1)[0];
+  }
+
+  // then we need to see where it exists on the page
+  var exists = $("a[href='" + url + ".html']").parent()
+  setTimeout(function() {
+    debugger
+    if (curUrlArray.length > urlArray.length) {
+      // if the new url has fewer parts than the old one,
       // we need to animate up the chart, so we call changeUp().
       changeUp(url);
     }
-    else if (exists.length < 1) {
+    else if (urlArray.length > curUrlArray.length) {
       // if there is no link to the last element in the hash,
       // that means it is further down the chart
       // which means for the animation to run properly,
       // we need to visit the pages in order
-      $.each(urlArray, function(index, serialUrl) {
+      $.each($(urlArray).not(curUrlArray), function(index, serialUrl) {
         //this timeout means each page waits the amount
         // of time it takes the previous page to load,
         // so the animation occurs sequentially through
@@ -365,13 +382,13 @@ $(window).on("hashchange", function(e) {
         }, 7.1 * changeTime * index);
       });
     }
-    else if (exists.first().hasClass("info")){
-      // if the first example of the url is on an info div,
-      // it is one step down the chart,
-      // so it can simply run changeDown()
-      changeDown(url);
-    }
-  }, 500);
+    // else if ($(urlArray).not(curUrlArray).length == 1){
+    //   // if the new url has one more part than the old one
+    //   // it is one step down the chart,
+    //   // so it can simply run changeDown()
+    //   changeDown(url);
+    // }
+  }, waitTime);
 });
 
 if (window.location.hash != "") {
