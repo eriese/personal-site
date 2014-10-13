@@ -131,7 +131,7 @@ var changeOut = function($thisDiv, $newPage) {
   .css({"padding-top": centerText($thisDiv, "h1")});
   var currHeight = $thisDiv.height();
   var currWidth = $thisDiv.width();
-  $thisDiv.animate({height: 200, width: 200, "margin-left": (200 - currWidth)/ -4, "margin-top": 19}, 500, function() {
+  $thisDiv.animate({height: 200, width: 200, "margin-left": (200 - currWidth), "margin-top": 19}, 500, function() {
     $thisDiv.off()
     .find("a").attr("href", "index.html")
     .find(".tint").css({"padding-top": centerText($thisDiv, "h1")});
