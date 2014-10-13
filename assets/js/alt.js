@@ -7,7 +7,7 @@ setSize = function() {
       $(div).css("padding-top", centerText($(div), ".text"));
     });
     if ($(".info")[0]) {
-      var margin = $(".info").css("margin").replace("px", "");
+      var margin = $(".info").css("margin-left").replace("px", "");
       $(".bottom").width(size + parseInt(margin) * 2);
       $("#top").width($("#bottom").width());
     }
@@ -129,7 +129,9 @@ var changeOut = function($thisDiv, $newPage) {
   .css({"margin-left": 15})
   .find(".tint").html("<h1>" + textContent + "</h1>")
   .css({"padding-top": centerText($thisDiv, "h1")});
-  $thisDiv.animate({height: 200, width: 200, "margin-left": 11, "margin-top": 19}, 500, function() {
+  var currHeight = $thisDiv.height();
+  var currWidth = $thisDiv.width();
+  $thisDiv.animate({height: 200, width: 200, "margin-left": (200 - currWidth)/ -4, "margin-top": 19}, 500, function() {
     $thisDiv.off()
     .find("a").attr("href", "index.html")
     .find(".tint").css({"padding-top": centerText($thisDiv, "h1")});
