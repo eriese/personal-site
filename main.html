@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Enoch Riese</title>
+  <link rel="stylesheet" href="assets/css/normalize.css">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/mobile.css">
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <link rel="shortcut icon" type="image/ico" href="favicon.ico" />
+</head>
+<body data-ng-app="main">
+  <div ng-if="currentPage.up" id="up-arrow">
+    <a ng-click="setPage(currentPage.up)" href=""><img src="assets/images/arrow-up.png" alt="previous level"/></a>
+  </div>
+  <div class="name" ng-class="currentPage.category">
+    <a ng-click="setPage('index')" href="">
+      <div class="tint" ng-class="topColor">
+        <h1>{{currentPage.title}}</h1>
+      </div>
+    </a>
+  </div>
+  <table id="top" ng-style="{width: getWidth(currentPage.numNexts.length)}">
+    <tr>
+      <td id="left"></td>
+      <td id="right"></td>
+    </tr>
+  </table>
+  <chart-page data-ng-if="currentPage.type == 'chart'"></chart-page>
+  <info-page data-ng-if="currentPage.type == 'info'"></info-page>
+
+  <div class="footer">
+    <span>more info</span>
+    <ul>
+      <li>enoch.riese@gmail.com</li>
+      <li><a href="enochriese_resume.pdf">resume</a></li>
+    </ul>
+  </div>
+</body>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.10/angular-sanitize.js"></script>
+<script src="assets/js/main.js"></script>
+</html>

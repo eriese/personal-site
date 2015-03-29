@@ -9,6 +9,7 @@ table {
 h1 {
   font-size: 32px;
   text-transform: capitalize;
+  width: 100%;
   /*padding: 75px 20px;*/
 }
 li {
@@ -55,10 +56,13 @@ a {
 .text {
   /*color: #690C7A;*/
   color: white;
+  width: 100%;
 }
 .tint {
   width: 100%;
   height: 100%;
+  display: flex;
+  align-items: center;
 }
 .green {
   background-color: rgba(0,240,10,0.2);
@@ -104,6 +108,19 @@ a {
   display: inline-block;
   vertical-align: middle;
   text-transform: uppercase;
+  position: relative;
+}
+.info:before{
+    content: "";
+    display: block;
+    padding-top: 100%;
+}
+.info a {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  bottom: 0px;
+  right: 0px;
 }
 .name {
   position: absolute;
@@ -226,7 +243,10 @@ video {
 }
 
 .out-arrow {
-  width: 35px;
+  position: absolute;
+  width: 24%;
+  bottom: 15%;
+  left: 38%;
   -webkit-transform: rotate(90deg);
     -moz-transform: rotate(90deg);
     -o-transform: rotate(90deg);
