@@ -19,7 +19,7 @@ li {
 a {
   text-decoration: none;
 }
-.footer.hover {
+.footer:hover {
   width: 100%;
   background-color: rgba(0,0,0,0.3);
   position: fixed;
@@ -29,10 +29,10 @@ a {
   text-align: center;
   width: 45%;
 }
-.footer.hover ul {
+.footer:hover ul {
   display: inline;
 }
-.footer.hover span {
+.footer:hover span {
   display: none;
 }
 .footer {
@@ -69,7 +69,7 @@ a {
   color: black;
   font-size: 18px;
 }
-.hover .green {
+.info .green:hover {
   background-color: #004703;
 }
 .magenta {
@@ -79,7 +79,7 @@ a {
   color: white;
   font-size: 18px;
 }
-.hover .magenta {
+.info .magenta:hover {
   background-color: rgba(105,12,122,1);
 }
 .label strong {
@@ -99,6 +99,12 @@ a {
   border-radius: 10px;
   margin-bottom: 80px;
 }
+
+.wrapper {
+  display: flex;
+  align-items: center;
+}
+
 .info {
   margin: 15px;
   border-radius: 100px;

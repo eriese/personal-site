@@ -10,9 +10,6 @@
   .info ~ .info{
     margin-top: 15px;
   }
-  .tint {
-    padding: 15px 0px;
-  }
   .img {
     width: 95%;
   }
@@ -36,6 +33,12 @@
   }
   .label strong {
     font-size: 28px;
+  }
+  .out-arrow {
+    width: 30px;
+    bottom: 10px;
+    right: 10px;
+    left: unset;
   }
 }
 @media (max-width: 1140) {

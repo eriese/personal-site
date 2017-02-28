@@ -4,6 +4,7 @@
     "category": "puppeteer",
     "title": "Double Aspect Bright and Fair",
     "up": "shows",
+    "color": 1,
     "img": {
       "src": "assets/images/puppetry.jpg",
       "desc": "Lynn speaks to a death row inmate"
@@ -15,6 +16,7 @@
     "category": "coder",
     "title": "coder",
     "up": "index",
+    "color": 1,
     "nexts": [
       {
         "title": "Processing and Arduino",
@@ -38,6 +40,7 @@
     "category": "puppeteer",
     "title": "Puppeteer",
     "up": "index",
+    "color": 1,
     "nexts": [
       {
         "title": "Shows",
@@ -56,6 +59,7 @@
     "category": "puppeteer",
     "title": "Food for the Gods",
     "up": "shows",
+    "color": 1,
     "img": {
       "src": "assets/images/fftg1.jpg",
       "alt": "The dinner table",
@@ -67,6 +71,7 @@
     "type": "chart",
     "category": "enoch",
     "title": "Enoch Riese",
+    "color": 0,
     "nexts": [
       {
         "title": "coder",
@@ -90,6 +95,7 @@
     "category": "puppeteer",
     "title": "Bottom of the Mouffe",
     "up": "shows",
+    "color": 1,
     "video": {
       "src": "assets/video/mouffe.webmsd.webm",
       "id": "mouffe",
@@ -102,6 +108,7 @@
     "category": "coder",
     "title": "Processing and Arduino",
     "up": "coding",
+    "color": 0,
     "nexts": [
       {
         "title": "Closing Window",
@@ -130,6 +137,7 @@
     "category": "coder",
     "title": "Web Apps",
     "up": "coding",
+    "color": 0,
     "nexts": [
       {
         "title": "Party Tag",
@@ -148,6 +156,7 @@
     "category": "puppeteer",
     "title": "shows",
     "up": "puppetry",
+    "color": 0,
     "nexts": [
       {
         "title": "Bottom of the Mouffe",
@@ -171,6 +180,7 @@
     "category": "skills",
     "title": "Skill Hoarder",
     "up": "index",
+    "color": 1,
     "text": "Managerial: <strong>Conflict resolution</strong>, <strong>Curriculum writing</strong>, <strong>Workshop facilitation</strong>, Languages: <strong>English</strong>, <strong>Spanish</strong>, Editing: <strong>Copy and content</strong>, <strong>Sound (Garageband, Audacity)</strong>, Technical: <strong>Construction and carpentry</strong>, <strong>Light and sound board</strong>, <strong>Light hanging and focusing</strong>, <strong>Puppet design and construction</strong>, <strong>Basic circuitry</strong>, <strong>Mechanical problem-solving</strong>, Sewing: <strong>Costume design</strong>, <strong>Pattern-making</strong>, <strong>Sewing</strong>, <strong>Embroidery</strong>, <strong>Basic tailoring</strong>."
   }
 }

@@ -1,25 +1,25 @@
-setSize = function() {
-  var size;
-  if($(window).width() > 750) {
-    size = $("body").width() * 0.15;
-    $(".info").css({height: size, width: size});
-    $.each($(".tint"), function(index, div) {
-      $(div).css("padding-top", centerText($(div), ".text"));
-    });
-    if ($(".info")[0]) {
-      var margin = $(".info").css("margin-left").replace("px", "");
-      $(".bottom").width(size + parseInt(margin) * 2);
-      $("#top").width($("#bottom").width());
-    }
-  }
-  else {
-    $(".info, .tint").removeAttr("style");
-  }
-  $("h1").parent().css("padding-top", centerText($("h1").parent(), "h1"));
-}
-var centerText = function($div, textSelector) {
-  return ($div.height() - $div.find(textSelector).height()) / 2
-}
+// setSize = function() {
+//   var size;
+//   if($(window).width() > 750) {
+//     size = $("body").width() * 0.15;
+//     $(".info").css({height: size, width: size});
+//     $.each($(".tint"), function(index, div) {
+//       $(div).css("padding-top", centerText($(div), ".text"));
+//     });
+//     if ($(".info")[0]) {
+//       var margin = $(".info").css("margin-left").replace("px", "");
+//       $(".bottom").width(size + parseInt(margin) * 2);
+//       $("#top").width($("#bottom").width());
+//     }
+//   }
+//   else {
+//     $(".info, .tint").removeAttr("style");
+//   }
+//   $("h1").parent().css("padding-top", centerText($("h1").parent(), "h1"));
+// }
+// var centerText = function($div, textSelector) {
+//   return ($div.height() - $div.find(textSelector).height()) / 2
+// }
 var changeoutListener = function() {
   if ($(window).width() > 750 && !listenerCheck) {
     $(".info").click(infoClick);
@@ -32,31 +32,31 @@ var changeoutListener = function() {
     listenerCheck = false;
   };
 }
-var addVideoListeners = function() {
-  $("video").on("click", function(e){
-    var video = $("video")[0];
-    if (video.paused) {
-      $(".img").css("width", "95%");
-      $("video").css({"width": "90%"});
-      video.play();
-    }
-    else {
-      video.pause();
-      $(".img").css("width", "");
-      $("video").css({"width": "100%"});
-    }
-  });
-}
-var addInfoListeners = function() {
-  $(".info").on({
-    mouseover: function(e){
-      $(this).addClass("hover");
-    },
-    mouseout: function(e){
-      $(this).removeClass("hover");
-    }
-  });
-}
+// var addVideoListeners = function() {
+//   $("video").on("click", function(e){
+//     var video = $("video")[0];
+//     if (video.paused) {
+//       $(".img").css("width", "95%");
+//       $("video").css({"width": "90%"});
+//       video.play();
+//     }
+//     else {
+//       video.pause();
+//       $(".img").css("width", "");
+//       $("video").css({"width": "100%"});
+//     }
+//   });
+// }
+// var addInfoListeners = function() {
+//   $(".info").on({
+//     mouseover: function(e){
+//       $(this).addClass("hover");
+//     },
+//     mouseout: function(e){
+//       $(this).removeClass("hover");
+//     }
+//   });
+// }
 listenerCheck = false;
 var coverBases = function() {
   setSize();
@@ -68,14 +68,14 @@ $(window).on({
   ready: coverBases,
   resize: coverBases,
 });
-$(".footer").on({
-  mouseover: function() {
-    $(".footer").addClass("hover");
-  },
-  mouseout: function() {
-    $(".footer").removeClass("hover");
-  }
-});
+// $(".footer").on({
+//   mouseover: function() {
+//     $(".footer").addClass("hover");
+//   },
+//   mouseout: function() {
+//     $(".footer").removeClass("hover");
+//   }
+// });
 
 var infoClick = function(e) {
   $thisDiv = $(this);
