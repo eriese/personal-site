@@ -9,15 +9,16 @@
   <link rel="stylesheet" href="assets/css/mobile.css">
   <link rel="icon" href="favicon.ico" type="image/x-icon">
   <link rel="shortcut icon" type="image/ico" href="favicon.ico" />
+  <!-- <base href="/"> -->
 </head>
 <body data-ng-app="main">
-  <div ng-if="currentPage.up" id="up-arrow">
-    <a ng-click="setPage(currentPage.up)" href=""><img src="assets/images/arrow-up.png" alt="previous level"/></a>
+  <div id="up-arrow">
+    <a ng-if="upHref" ng-href="{{upHref}}"><img src="assets/images/arrow-up.png" alt="previous level"/></a>
   </div>
-  <div class="name" ng-class="currentPage.category">
-    <a ng-click="setPage('index')" href="">
-      <div class="tint" ng-class="{magenta: currentPage.color == 0, green: currentPage.color == 1}">
-        <h1>{{currentPage.title}}</h1>
+  <div class="name" ng-class="category">
+    <a ui-sref="mainState">
+      <div class="tint" ng-class="{magenta: color == 0, green: color == 1}">
+        <h1>{{title}}</h1>
       </div>
     </a>
   </div>
@@ -27,8 +28,7 @@
       <td id="right"></td>
     </tr>
   </table>
-  <chart-page data-ng-if="currentPage.type == 'chart'"></chart-page>
-  <info-page data-ng-if="currentPage.type == 'info'"></info-page>
+  <div ui-view></div>
 
   <div class="footer">
     <span>more info</span>
@@ -38,22 +38,23 @@
     </ul>
   </div>
 </body>
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.10/angular-sanitize.js"></script>
+<script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha256-/SIrNqv8h6QGKDuNoLGA4iret+kyesCkHGzVUUV0shc=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.2/angular.min.js"></script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.2/angular-sanitize.js"></script>
+<script src="https://unpkg.com/angular-ui-router@0.4.2/release/angular-ui-router.js"></script>
 <script src="assets/js/main.js"></script>
 <script type="text/ng-template" id="_chart.html">
   <div>
-    <table id="bottom" ng-style="{width: getWidth(currentPage.nexts.length)}">
+    <table id="bottom" ng-style="{width: bottomWidth}">
       <tr>
-        <td ng-repeat="i in currentPage.nexts" class="bottom" ng-if="!$last" ></td>
+        <td ng-repeat="i in nexts" class="bottom" ng-if="!$last" ></td>
       </tr>
     </table>
-    <div class="info" data-ng-repeat="next in currentPage.nexts">
-      <a ng-click="setPage(next.href)" href="">
-        <div class="tint" ng-class="{magenta: currentPage.color == 1, green: currentPage.color == 0}">
+    <div class="info" data-ng-repeat="next in nexts">
+      <a ng-href="{{getHref(next)}}" target="{{getTarget(next)}}">
+        <div class="tint" ng-class="{magenta: color == 1, green: color == 0}">
           <p class="text">{{next.title}}</p>
-          <img ng-if="next.isOut" class="out-arrow" src="assets/images/arrow-up.png" alt="up"/>
+          <img ng-if="next.href" class="out-arrow" src="assets/images/arrow-up.png" alt="go to site"/>
         </div>
       </a>
     </div>
@@ -62,13 +63,13 @@
 <script type="text/ng-template" id="_info.html" class="html">
   <div class="label">
     <div class="wrapper">
-      <div ng-if="currentPage.img || currentPage.video" class="img">
-        <img ng-if="currentPage.img" ng-src="{{currentPage.img.src}}" alt="{{currentPage.img.alt}}"/>
-        <video ng-if="currentPage.video" ng-src="{{currentPage.video.src}}" id="{{currentPage.video.id}}" ng-click="vidClick($event)"></video>
-        {{currentPage.img.desc}}
-        {{currentPage.video.desc}}
+      <div ng-if="data.img || data.video" class="img">
+        <img ng-if="data.img" ng-src="{{data.img.src}}" alt="{{data.img.alt}}"/>
+        <video ng-if="data.video" ng-src="{{data.video.src}}" id="{{data.video.id}}" ng-click="vidClick($event)"></video>
+        {{data.img.desc}}
+        {{data.video.desc}}
       </div>
-      <div ng-class="{description: currentPage.img || currentPage.video}" ng-bind-html="currentPage.text">
+      <div ng-class="{description: data.img || data.video}" ng-bind-html="data.text">
       </div>
     </div>
   </div>
