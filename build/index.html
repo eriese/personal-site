@@ -1,19 +1,19 @@
-<!doctype html>
+../<!doctype html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Enoch Riese</title>
-  <link rel="stylesheet" href="assets/css/normalize.css">
-  <link rel="stylesheet" href="assets/css/style.css">
-  <link rel="stylesheet" href="assets/css/mobile.css">
+  <link rel="stylesheet" href="./css/normalize.css">
+  <link rel="stylesheet" href="./css/style.css">
+  <link rel="stylesheet" href="./css/mobile.css">
   <link rel="icon" href="favicon.ico" type="image/x-icon">
   <link rel="shortcut icon" type="image/ico" href="favicon.ico" />
   <!-- <base href="/"> -->
 </head>
 <body data-ng-app="main">
   <div id="up-arrow">
-    <a ng-if="upHref" ng-href="{{upHref}}"><img src="assets/images/arrow-up.png" alt="previous level"/></a>
+    <a ng-if="upHref" ng-href="{{upHref}}"><img src="./images/arrow-up.png" alt="previous level"/></a>
   </div>
   <div class="name" ng-class="category">
     <a ui-sref="mainState">
@@ -42,7 +42,7 @@
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.2/angular.min.js"></script>
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.2/angular-sanitize.js"></script>
 <script src="https://unpkg.com/angular-ui-router@0.4.2/release/angular-ui-router.js"></script>
-<script src="assets/js/main.js"></script>
+<script src="bundle.js"></script>
 <script type="text/ng-template" id="_chart.html">
   <div>
     <table id="bottom" ng-style="{width: bottomWidth}">
@@ -54,7 +54,7 @@
       <a ng-href="{{getHref(next)}}" target="{{getTarget(next)}}">
         <div class="tint" ng-class="{magenta: color == 1, green: color == 0}">
           <p class="text">{{next.title}}</p>
-          <img ng-if="next.href" class="out-arrow" src="assets/images/arrow-up.png" alt="go to site"/>
+          <img ng-if="next.href" class="out-arrow" src="./images/arrow-up.png" alt="go to site"/>
         </div>
       </a>
     </div>
