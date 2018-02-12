@@ -266,11 +266,7 @@
     function getUpState(toState) {
       if (toState.name == "mainState") {return;}
       var tree = toState.name.split(".");
-      var upState = "mainState";
-      if (tree.length > 1) {
-        tree.pop();
-        upState = tree.join(".");
-      }
+      var upState = tree.length > 1 ? "^" : "mainState";
       return $state.href(upState);
     }
   }])
