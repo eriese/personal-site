@@ -1,3 +1,5 @@
+import $ from 'jquery-slim';
+
 export default class InfoController {
 	/*@ngInject*/
 	constructor($scope, $stateParams) {

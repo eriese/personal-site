@@ -23,5 +23,6 @@ module.exports = {
 		port: 3000,
 		contentBase: "./build",
 		inline: true
-	}
+	},
+	devtool: 'cheap-eval-source-map'
 }

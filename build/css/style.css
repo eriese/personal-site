@@ -121,7 +121,7 @@ a {
   margin: 15px;
   border-radius: 50%;
   width: 15%;
-  max-width: 150px;
+  /*max-width: 200px;*/
   overflow: hidden;
   text-align: center;
   display: inline-block;

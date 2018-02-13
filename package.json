@@ -31,5 +31,11 @@
     "babel-preset-env": "^1.6.1",
     "webpack": "^3.11.0",
     "webpack-dev-server": "^2.11.1"
+  },
+  "dependencies": {
+    "@uirouter/angularjs": "^1.0.15",
+    "angular": "^1.6.9",
+    "angular-sanitize": "^1.6.9",
+    "jquery-slim": "^3.0.0"
   }
 }

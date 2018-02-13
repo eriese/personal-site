@@ -1,3 +1,7 @@
+import angular from "angular";
+import uiRouter from "@uirouter/angularjs";
+import ngSanitize from "angular-sanitize";
+
 import pages from "./pages";
 import ChartContrller from "./controllers/chartController";
 import InfoController from "./controllers/InfoController";
@@ -5,8 +9,8 @@ import InfoController from "./controllers/InfoController";
 let app = angular.module("main", ["ngSanitize", "ui.router"]);
 
 /*@ngInject*/
-app.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
-  $urlRouterProvider.otherwise("/");
+app.config(function ($uiRouterProvider, $locationProvider) {
+  $uiRouterProvider.urlService.rules.otherwise({state: "mainState"});
   // $locationProvider.html5Mode(true);
   let makeView = (page)  => {
     let {type} = page;
@@ -18,16 +22,17 @@ app.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
     }
   };
 
+  const $stateRegistry = $uiRouterProvider.stateRegistry;
   for (let page of pages) {
-    let {href: url, scope: params} = page;
+    let {href: url, scope: params, state: name} = page;
     let views = makeView(page);
 
-    $stateProvider.state(page.state, {url, params, views});
+    $stateRegistry.register({name, url, params, views});
   };
 })
 
 /*@ngInject*/
-app.run(function($rootScope, $state) {
+app.run(function($rootScope, $state, $transitions, $trace) {
   let getUpState = (toState) => {
     let {name} = toState;
     if (name == "mainState") {return;}
@@ -35,14 +40,16 @@ app.run(function($rootScope, $state) {
     return $state.href(upState);
   }
 
-  let onStateChange = (event, toState, toParams, fromState, fromParams) => {
+  let onStateChange = (transition) => {
+    let toState = transition.to();
+    let toParams = transition.params();
     $rootScope.upHref = getUpState(toState);
     $rootScope.title = toParams.title;
     $rootScope.category = toState.name == "mainState" ? "enoch" : toState.name.split(".")[0];
     $rootScope.color = toParams.color;
   }
 
-  $rootScope.$on("$stateChangeSuccess", onStateChange);
+  $transitions.onSuccess({}, onStateChange);
 })
 
 app.controller("chartController", ChartContrller);
