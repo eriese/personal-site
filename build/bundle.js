@@ -9586,246 +9586,340 @@ module.exports = function (regExp, replace) {
 "use strict";
 
 
-(function () {
-  "use strict";
+var _pages = __webpack_require__(330);
 
-  var app = angular.module("main", ["ngSanitize", "ui.router"]);
+var _pages2 = _interopRequireDefault(_pages);
 
-  var pages = [{
-    "href": "/aspect",
-    "state": "puppeteer.shows.aspect",
-    "type": "info",
-    "scope": {
-      "title": "Double Aspect Bright and Fair",
-      "color": 1,
-      "img": {
-        "src": "assets/images/puppetry.jpg",
-        "desc": "Lynn speaks to a death row inmate"
-      },
-      "text": "Presented as part of Eric Ehn's 17-play cycle, Soulographie: Our Genocides, a durational performance event looking at 20th century America’s relationships to genocides in the U.S. (the Tulsa Race Riot), East Africa (Rwanda and Uganda), and Central America (Guatemala and El Salvador).Double Aspect Bright and Fair was directed by Dan Hurlin and presented at Sarah Lawrence College, American Dance Institute, and LaMaMa, etc."
+var _chartController = __webpack_require__(331);
+
+var _chartController2 = _interopRequireDefault(_chartController);
+
+var _InfoController = __webpack_require__(332);
+
+var _InfoController2 = _interopRequireDefault(_InfoController);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var app = angular.module("main", ["ngSanitize", "ui.router"]);
+
+/*@ngInject*/
+app.config(["$stateProvider", "$urlRouterProvider", "$locationProvider", function ($stateProvider, $urlRouterProvider, $locationProvider) {
+  $urlRouterProvider.otherwise("/");
+  // $locationProvider.html5Mode(true);
+
+  var getView = function getView(page) {
+    var isChart = page.type == "chart";
+    return {
+      "@": {
+        templateUrl: isChart ? "_chart.html" : "_info.html",
+        controller: isChart ? "chartController" : "infoController"
+      }
+    };
+  };
+
+  var _iteratorNormalCompletion = true;
+  var _didIteratorError = false;
+  var _iteratorError = undefined;
+
+  try {
+    for (var _iterator = _pages2.default[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+      var page = _step.value;
+      var url = page.href,
+          params = page.scope;
+
+      var views = getView(page);
+
+      $stateProvider.state(page.state, { url: url, params: params, views: views });
     }
-  }, {
-    "href": "/coder",
-    "state": "coder",
-    "type": "chart",
-    "scope": {
-      "title": "coder",
-      "color": 1,
-      "nexts": [{
-        "title": "Processing and Arduino",
-        "sref": "coder.processing"
-      }, {
-        "title": "gitHub",
-        "href": "http://www.github.com/eriese"
-      }, {
-        "title": "Web",
-        "sref": "coder.web"
-      }]
+  } catch (err) {
+    _didIteratorError = true;
+    _iteratorError = err;
+  } finally {
+    try {
+      if (!_iteratorNormalCompletion && _iterator.return) {
+        _iterator.return();
+      }
+    } finally {
+      if (_didIteratorError) {
+        throw _iteratorError;
+      }
     }
-  }, {
-    "href": "/puppetry",
-    "state": "puppeteer",
-    "type": "chart",
-    "scope": {
-      "title": "Puppeteer",
-      "color": 1,
-      "nexts": [{
-        "title": "Shows",
-        "sref": "puppeteer.shows"
-      }, {
-        "title": "Construction/ mechanical problemsolving"
-      }]
+  }
+
+  ;
+}]);
+
+/*@ngInject*/
+app.run(["$rootScope", "$state", function ($rootScope, $state) {
+  var getUpState = function getUpState(toState) {
+    var name = toState.name;
+
+    if (name == "mainState") {
+      return;
     }
-  }, {
-    "href": "/food",
-    "state": "puppeteer.shows.food",
-    "type": "info",
-    "scope": {
-      "title": "Food for the Gods",
-      "color": 1,
-      "img": {
-        "src": "assets/images/fftg1.jpg",
-        "alt": "The dinner table",
-        "desc": "The ancestors greet one another before the meal."
-      },
-      "text": "Food for the Gods was written and conceived by Nehprii Amenii in response to the killings of Troy Davis, Trayvon Martin, and Kimani Gray, and as a reaction to the statistic that every 36 hours a young black person in the United States is killed extrajudicially by a police officer, security guard, or self-appointed law enforcer."
-    }
-  }, {
-    "href": "/",
-    "state": "mainState",
-    "type": "chart",
-    "scope": {
-      "title": "Enoch Riese",
-      "color": 0,
-      "nexts": [{
-        "title": "coder",
-        "sref": "coder"
-      }, {
-        "title": "puppeteer",
-        "sref": "puppeteer"
-      }, {
-        "title": "skill hoarder",
-        "sref": "skills"
-      }]
-    }
-  }, {
-    "href": "/mouffe",
-    "state": "puppeteer.shows.mouffe",
-    "type": "info",
-    "scope": {
-      "title": "Bottom of the Mouffe",
-      "color": 1,
-      "video": {
-        "src": "assets/video/mouffe.webmsd.webm",
-        "id": "mouffe",
-        "desc": "Click to watch"
-      },
-      "text": "A 12-minute Bunraku-style puppet piece conceived by Jeanette Plourde and performed to music and without text. Bottom of the Mouffe is a companion piece to La Cienaga. Four puppets are featured in the piece: two 36-inch puppets and two 25-inch puppets."
-    }
-  }, {
-    "href": "/processing",
-    "state": "coder.processing",
-    "type": "chart",
-    "scope": {
+    var upState = name.includes(".") ? "^" : "mainState";
+    return $state.href(upState);
+  };
+
+  var onStateChange = function onStateChange(event, toState, toParams, fromState, fromParams) {
+    $rootScope.upHref = getUpState(toState);
+    $rootScope.title = toParams.title;
+    $rootScope.category = toState.name == "mainState" ? "enoch" : toState.name.split(".")[0];
+    $rootScope.color = toParams.color;
+  };
+
+  $rootScope.$on("$stateChangeSuccess", onStateChange);
+}]);
+
+app.controller("chartController", _chartController2.default);
+
+app.controller("infoController", _InfoController2.default);
+
+/***/ }),
+/* 330 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var pages = [{
+  "href": "/aspect",
+  "state": "puppeteer.shows.aspect",
+  "type": "info",
+  "scope": {
+    "title": "Double Aspect Bright and Fair",
+    "color": 1,
+    "img": {
+      "src": "./images/puppetry.jpg",
+      "desc": "Lynn speaks to a death row inmate"
+    },
+    "text": "Presented as part of Eric Ehn's 17-play cycle, Soulographie: Our Genocides, a durational performance event looking at 20th century America’s relationships to genocides in the U.S. (the Tulsa Race Riot), East Africa (Rwanda and Uganda), and Central America (Guatemala and El Salvador).Double Aspect Bright and Fair was directed by Dan Hurlin and presented at Sarah Lawrence College, American Dance Institute, and LaMaMa, etc."
+  }
+}, {
+  "href": "/coder",
+  "state": "coder",
+  "type": "chart",
+  "scope": {
+    "title": "coder",
+    "color": 1,
+    "nexts": [{
       "title": "Processing and Arduino",
-      "color": 0,
-      "nexts": [{
-        "title": "Closing Window",
-        "href": "http://www.openprocessing.org/sketch/121624"
-      }, {
-        "title": "Diminishing Returns",
-        "href": "http://www.openprocessing.org/sketch/121625"
-      }, {
-        "title": "Consequences",
-        "href": "http://www.openprocessing.org/sketch/103537"
-      }, {
-        "title": "The Swell",
-        "href": "http://electronicenoch.tumblr.com"
-      }]
-    }
-  }, {
-    "href": "/web",
-    "state": "coder.web",
-    "type": "chart",
-    "scope": {
-      "title": "Web Apps",
-      "color": 0,
-      "nexts": [{
-        "title": "Party Tag",
-        "href": "http://www.thepartytag.com"
-      }, {
-        "title": "BedPost",
-        "href": "http://www.bedpost.me"
-      }]
-    }
-  }, {
-    "href": "/shows",
-    "state": "puppeteer.shows",
-    "type": "chart",
-    "scope": {
-      "title": "shows",
-      "color": 0,
-      "nexts": [{
-        "title": "Bottom of the Mouffe",
-        "sref": "puppeteer.shows.mouffe"
-      }, {
-        "title": "Double Aspect Bright and Fair",
-        "sref": "puppeteer.shows.aspect"
-      }, {
-        "title": "Food for the Gods",
-        "sref": "puppeteer.shows.food"
-      }]
-    }
-  }, {
-    "href": "/skills",
-    "state": "skills",
-    "type": "info",
-    "scope": {
-      "category": "skills",
-      "title": "Skill Hoarder",
-      "color": 1,
-      "text": "Managerial: <strong>Conflict resolution</strong>, <strong>Curriculum writing</strong>, <strong>Workshop facilitation</strong>, Languages: <strong>English</strong>, <strong>Spanish</strong>, Editing: <strong>Copy and content</strong>, <strong>Sound (Garageband, Audacity)</strong>, Technical: <strong>Construction and carpentry</strong>, <strong>Light and sound board</strong>, <strong>Light hanging and focusing</strong>, <strong>Puppet design and construction</strong>, <strong>Basic circuitry</strong>, <strong>Mechanical problem-solving</strong>, Sewing: <strong>Costume design</strong>, <strong>Pattern-making</strong>, <strong>Sewing</strong>, <strong>Embroidery</strong>, <strong>Basic tailoring</strong>."
-    }
-  }];
+      "sref": "coder.processing"
+    }, {
+      "title": "gitHub",
+      "href": "http://www.github.com/eriese"
+    }, {
+      "title": "Web",
+      "sref": "coder.web"
+    }]
+  }
+}, {
+  "href": "/puppetry",
+  "state": "puppeteer",
+  "type": "chart",
+  "scope": {
+    "title": "Puppeteer",
+    "color": 1,
+    "nexts": [{
+      "title": "Shows",
+      "sref": "puppeteer.shows"
+    }, {
+      "title": "Construction/ mechanical problemsolving"
+    }]
+  }
+}, {
+  "href": "/food",
+  "state": "puppeteer.shows.food",
+  "type": "info",
+  "scope": {
+    "title": "Food for the Gods",
+    "color": 1,
+    "img": {
+      "src": "./images/fftg1.jpg",
+      "alt": "The dinner table",
+      "desc": "The ancestors greet one another before the meal."
+    },
+    "text": "Food for the Gods was written and conceived by Nehprii Amenii in response to the killings of Troy Davis, Trayvon Martin, and Kimani Gray, and as a reaction to the statistic that every 36 hours a young black person in the United States is killed extrajudicially by a police officer, security guard, or self-appointed law enforcer."
+  }
+}, {
+  "href": "/",
+  "state": "mainState",
+  "type": "chart",
+  "scope": {
+    "title": "Enoch Riese",
+    "color": 0,
+    "nexts": [{
+      "title": "coder",
+      "sref": "coder"
+    }, {
+      "title": "puppeteer",
+      "sref": "puppeteer"
+    }, {
+      "title": "skill hoarder",
+      "sref": "skills"
+    }]
+  }
+}, {
+  "href": "/mouffe",
+  "state": "puppeteer.shows.mouffe",
+  "type": "info",
+  "scope": {
+    "title": "Bottom of the Mouffe",
+    "color": 1,
+    "video": {
+      "src": "./video/mouffe.webmsd.webm",
+      "id": "mouffe",
+      "desc": "Click to watch"
+    },
+    "text": "A 12-minute Bunraku-style puppet piece conceived by Jeanette Plourde and performed to music and without text. Bottom of the Mouffe is a companion piece to La Cienaga. Four puppets are featured in the piece: two 36-inch puppets and two 25-inch puppets."
+  }
+}, {
+  "href": "/processing",
+  "state": "coder.processing",
+  "type": "chart",
+  "scope": {
+    "title": "Processing and Arduino",
+    "color": 0,
+    "nexts": [{
+      "title": "Closing Window",
+      "href": "http://www.openprocessing.org/sketch/121624"
+    }, {
+      "title": "Diminishing Returns",
+      "href": "http://www.openprocessing.org/sketch/121625"
+    }, {
+      "title": "Consequences",
+      "href": "http://www.openprocessing.org/sketch/103537"
+    }, {
+      "title": "The Swell",
+      "href": "http://electronicenoch.tumblr.com"
+    }]
+  }
+}, {
+  "href": "/web",
+  "state": "coder.web",
+  "type": "chart",
+  "scope": {
+    "title": "Web Apps",
+    "color": 0,
+    "nexts": [{
+      "title": "Party Tag",
+      "href": "http://www.thepartytag.com"
+    }, {
+      "title": "BedPost",
+      "href": "http://www.bedpost.me"
+    }]
+  }
+}, {
+  "href": "/shows",
+  "state": "puppeteer.shows",
+  "type": "chart",
+  "scope": {
+    "title": "shows",
+    "color": 0,
+    "nexts": [{
+      "title": "Bottom of the Mouffe",
+      "sref": "puppeteer.shows.mouffe"
+    }, {
+      "title": "Double Aspect Bright and Fair",
+      "sref": "puppeteer.shows.aspect"
+    }, {
+      "title": "Food for the Gods",
+      "sref": "puppeteer.shows.food"
+    }]
+  }
+}, {
+  "href": "/skills",
+  "state": "skills",
+  "type": "info",
+  "scope": {
+    "category": "skills",
+    "title": "Skill Hoarder",
+    "color": 1,
+    "text": "Managerial: <strong>Conflict resolution</strong>, <strong>Curriculum writing</strong>, <strong>Workshop facilitation</strong>, Languages: <strong>English</strong>, <strong>Spanish</strong>, Editing: <strong>Copy and content</strong>, <strong>Sound (Garageband, Audacity)</strong>, Technical: <strong>Construction and carpentry</strong>, <strong>Light and sound board</strong>, <strong>Light hanging and focusing</strong>, <strong>Puppet design and construction</strong>, <strong>Basic circuitry</strong>, <strong>Mechanical problem-solving</strong>, Sewing: <strong>Costume design</strong>, <strong>Pattern-making</strong>, <strong>Sewing</strong>, <strong>Embroidery</strong>, <strong>Basic tailoring</strong>."
+  }
+}];
 
-  app.config(["$stateProvider", "$urlRouterProvider", "$locationProvider", function ($stateProvider, $urlRouterProvider, $locationProvider) {
-    $urlRouterProvider.otherwise("/");
-    // $locationProvider.html5Mode(true);
+exports.default = pages;
 
-    for (var i = 0; i < pages.length; i++) {
-      var page = pages[i];
-      var isChart = page.type == "chart";
+/***/ }),
+/* 331 */
+/***/ (function(module, exports, __webpack_require__) {
 
-      var state = {
-        url: page.href,
-        views: {
-          "@": {
-            templateUrl: isChart ? "_chart.html" : "_info.html",
-            controller: isChart ? "chartController" : "infoController"
-          }
-        },
-        params: page.scope
-      };
+"use strict";
 
-      $stateProvider.state(page.state, state);
-    };
-  }]);
 
-  app.controller("chartController", ["$scope", "$stateParams", "$state", function ($scope, $stateParams, $state) {
-    $scope.nexts = $state.current.params.nexts;
-    $scope.bottomWidth = getWidth();
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
 
-    $scope.getHref = function (next) {
-      return next.sref ? $state.href(next.sref) : next.href;
-    };
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-    $scope.getTarget = function (next) {
-      return next.sref ? "" : "_blank";
-    };
+var ChartController =
+/*@ngInject*/
+function ChartController($scope, $stateParams, $state) {
+	_classCallCheck(this, ChartController);
 
-    function getWidth() {
-      var len = $scope.nexts.length - 1;
-      var offset = 30 * len;
-      var perc = len * 15;
-      return "calc(" + perc + "% + " + offset + "px)";
-    }
-  }]);
+	var getWidth = function getWidth() {
+		var len = $scope.nexts.length - 1;
+		var offset = 30 * len;
+		var perc = len * 15;
+		return "calc(" + perc + "% + " + offset + "px";
+	};
 
-  app.controller("infoController", ["$scope", "$stateParams", function ($scope, $stateParams) {
-    $scope.data = $stateParams;
+	$scope.nexts = $state.current.params.nexts;
+	$scope.bottomWidth = getWidth();
 
-    $scope.vidClick = function ($event) {
-      var video = $event.target;
-      if (video.paused) {
-        $(".img").css("width", "95%");
-        $("video").css({ "width": "90%" });
-        video.play();
-      } else {
-        video.pause();
-        $(".img").css("width", "");
-        $("video").css({ "width": "100%" });
-      }
-    };
-  }]);
+	$scope.getHref = function (next) {
+		return next.sref ? $state.href(next.sref) : next.href;
+	};
 
-  app.run(["$rootScope", "$state", function ($rootScope, $state) {
-    $rootScope.$on("$stateChangeSuccess", function (event, toState, toParams, fromState, fromParams) {
-      $rootScope.upHref = getUpState(toState);
-      $rootScope.title = toParams.title;
-      $rootScope.category = toState.name == "mainState" ? "enoch" : toState.name.split(".")[0];
-      $rootScope.color = toParams.color;
-    });
+	$scope.getTarget = function (next) {
+		return next.sref ? "" : "_blank";
+	};
+};
 
-    function getUpState(toState) {
-      if (toState.name == "mainState") {
-        return;
-      }
-      var tree = toState.name.split(".");
-      var upState = tree.length > 1 ? "^" : "mainState";
-      return $state.href(upState);
-    }
-  }]);
-})();
+ChartController.$inject = ["$scope", "$stateParams", "$state"];
+exports.default = ChartController;
+
+/***/ }),
+/* 332 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var InfoController =
+/*@ngInject*/
+function InfoController($scope, $stateParams) {
+	_classCallCheck(this, InfoController);
+
+	$scope.data = $stateParams;
+
+	$scope.vidClick = function ($event) {
+		var video = $event.target;
+		if (video.paused) {
+			$(".img").css("width", "95%");
+			$("video").css({ "width": "90%" });
+			video.play();
+		} else {
+			video.pause();
+			$(".img").css("width", "");
+			$("video").css({ "width": "100%" });
+		}
+	};
+};
+
+InfoController.$inject = ["$scope", "$stateParams"];
+exports.default = InfoController;
 
 /***/ })
 /******/ ]);

@@ -13,7 +13,8 @@ module.exports = {
 				test: /\.js$/,
 				exclude: /node-modules/,
 				query: {
-					presets: ['env']
+					presets: ['env'],
+					plugins: ["angularjs-annotate"]
 				}
 			}
 		]
