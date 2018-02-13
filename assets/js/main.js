@@ -33,23 +33,28 @@ app.config(function ($uiRouterProvider, $locationProvider) {
 
 /*@ngInject*/
 app.run(function($rootScope, $state, $transitions, $trace) {
-  let getUpState = (toState) => {
-    let {name} = toState;
-    if (name == "mainState") {return;}
-    let upState = name.includes(".") ? "^" : "mainState";
-    return $state.href(upState);
-  }
 
   let onStateChange = (transition) => {
-    let toState = transition.to();
+    let toState = transition.to().name;
     let toParams = transition.params();
-    $rootScope.upHref = getUpState(toState);
+    $rootScope.upHref = $state.href("^");
     $rootScope.title = toParams.title;
-    $rootScope.category = toState.name == "mainState" ? "enoch" : toState.name.split(".")[0];
+    $rootScope.category = toState.split(".")[1] || "enoch";
     $rootScope.color = toParams.color;
   }
 
   $transitions.onSuccess({}, onStateChange);
+
+  $transitions.onStart({}, (transition) => {
+    let toState = transition.to().name;
+    let fromState = transition.from().name;
+
+    if (toState.includes(fromState)) {
+      console.log("down");
+    } else if (fromState.includes(toState)) {
+      console.log("up");
+    }
+  })
 })
 
 app.controller("chartController", ChartContrller);

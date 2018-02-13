@@ -1,8 +1,8 @@
-import $ from 'jquery-slim';
+import {TweenMax} from "gsap";
 
 export default class InfoController {
 	/*@ngInject*/
-	constructor($scope, $stateParams) {
+	constructor($scope, $stateParams, $element, $timeout) {
 		$scope.data = $stateParams;
 
 		$scope.vidClick = ($event) => {
@@ -18,5 +18,8 @@ export default class InfoController {
 				$("video").css({"width": "100%"});
 			}
 		}
+
+		$element.hide();
+
     }
 }

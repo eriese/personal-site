@@ -1,4 +1,5 @@
 const path = require('path');
+const webpack = require('webpack');
 
 module.exports = {
 	entry: ['babel-polyfill', './assets/js/main.js'],
@@ -24,5 +25,10 @@ module.exports = {
 		contentBase: "./build",
 		inline: true
 	},
-	devtool: 'cheap-eval-source-map'
+	devtool: 'cheap-eval-source-map',
+	plugins: [
+		new webpack.ProvidePlugin({
+			"window.jQuery": "jquery-slim"
+		}),
+	]
 }

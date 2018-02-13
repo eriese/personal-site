@@ -1,7 +1,7 @@
 const pages = [
 {
   "href": "/aspect",
-  "state": "puppeteer.shows.aspect",
+  "state": "enoch.puppeteer.shows.aspect",
   "type" : "info",
   "scope": {
     "title": "Double Aspect Bright and Fair",
@@ -14,8 +14,8 @@ const pages = [
   }
 },
 {
-  "href": "/coder",
-  "state": "coder",
+  "href": "^/coder",
+  "state": "enoch.coder",
   "type": "chart",
   "scope": {
     "title": "coder",
@@ -23,7 +23,7 @@ const pages = [
     "nexts": [
     {
       "title": "Processing and Arduino",
-      "sref": "coder.processing",
+      "sref": "enoch.coder.processing",
     },
     {
       "title": "gitHub",
@@ -31,14 +31,14 @@ const pages = [
     },
     {
       "title": "Web",
-      "sref": "coder.web"
+      "sref": "enoch.coder.web"
     }
     ]
   }
 },
 {
-  "href": "/puppetry",
-  "state": "puppeteer",
+  "href": "^/puppetry",
+  "state": "enoch.puppeteer",
   "type": "chart",
   "scope": {
     "title": "Puppeteer",
@@ -46,7 +46,7 @@ const pages = [
     "nexts": [
     {
       "title": "Shows",
-      "sref": "puppeteer.shows",
+      "sref": "enoch.puppeteer.shows",
     },
     {
       "title": "Construction/ mechanical problemsolving",
@@ -56,7 +56,7 @@ const pages = [
 },
 {
   "href": "/food",
-  "state": "puppeteer.shows.food",
+  "state": "enoch.puppeteer.shows.food",
   "type": "info",
   "scope": {
     "title": "Food for the Gods",
@@ -71,7 +71,7 @@ const pages = [
 },
 {
   "href": "/",
-  "state": "mainState",
+  "state": "enoch",
   "type": "chart",
   "scope": {
     "title": "Enoch Riese",
@@ -79,22 +79,22 @@ const pages = [
     "nexts": [
     {
       "title": "coder",
-      "sref": "coder"
+      "sref": "enoch.coder"
     },
     {
       "title": "puppeteer",
-      "sref": "puppeteer"
+      "sref": "enoch.puppeteer"
     },
     {
       "title": "skill hoarder",
-      "sref": "skills"
+      "sref": "enoch.skills"
     }
     ]
   }
 },
 {
   "href": "/mouffe",
-  "state": "puppeteer.shows.mouffe",
+  "state": "enoch.puppeteer.shows.mouffe",
   "type": "info",
   "scope": {
     "title": "Bottom of the Mouffe",
@@ -109,7 +109,7 @@ const pages = [
 },
 {
   "href": "/processing",
-  "state": "coder.processing",
+  "state": "enoch.coder.processing",
   "type": "chart",
   "scope": {
     "title": "Processing and Arduino",
@@ -136,7 +136,7 @@ const pages = [
 },
 {
   "href": "/web",
-  "state": "coder.web",
+  "state": "enoch.coder.web",
   "type": "chart",
   "scope": {
     "title": "Web Apps",
@@ -155,7 +155,7 @@ const pages = [
 },
 {
   "href": "/shows",
-  "state": "puppeteer.shows",
+  "state": "enoch.puppeteer.shows",
   "type": "chart",
   "scope": {
     "title": "shows",
@@ -163,22 +163,22 @@ const pages = [
     "nexts": [
     {
       "title": "Bottom of the Mouffe",
-      "sref": "puppeteer.shows.mouffe",
+      "sref": "enoch.puppeteer.shows.mouffe",
     },
     {
       "title": "Double Aspect Bright and Fair",
-      "sref": "puppeteer.shows.aspect",
+      "sref": "enoch.puppeteer.shows.aspect",
     },
     {
       "title": "Food for the Gods",
-      "sref": "puppeteer.shows.food",
+      "sref": "enoch.puppeteer.shows.food",
     }
     ]
   }
 },
 {
-  "href": "/skills",
-  "state": "skills",
+  "href": "^/skills",
+  "state": "enoch.skills",
   "type": "info",
   "scope" : {
     "category": "skills",

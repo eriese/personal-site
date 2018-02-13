@@ -36,6 +36,7 @@
     "@uirouter/angularjs": "^1.0.15",
     "angular": "^1.6.9",
     "angular-sanitize": "^1.6.9",
+    "gsap": "^1.20.3",
     "jquery-slim": "^3.0.0"
   }
 }

@@ -16,7 +16,7 @@
     <a ng-if="upHref" ng-href="{{upHref}}"><img src="./images/arrow-up.png" alt="previous level"/></a>
   </div>
   <div class="name" ng-class="category">
-    <a ui-sref="mainState">
+    <a ui-sref="enoch">
       <div class="tint" ng-class="{magenta: color == 0, green: color == 1}">
         <h1>{{title}}</h1>
       </div>
@@ -43,7 +43,7 @@
 
 <script type="text/ng-template" id="_chart.html">
   <div>
-    <table id="bottom" ng-style="{width: bottomWidth}">
+    <table id="bottom" >
       <tr>
         <td ng-repeat="i in nexts" class="bottom" ng-if="!$last" ></td>
       </tr>
