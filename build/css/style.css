@@ -141,15 +141,15 @@ a {
   float: right;
 }
 
-.next-col.align-right .left-half {
+.next-col.align-right .outside-half {
   border-right: 3px solid white;
 }
 
-.next-col.align-left .right-half, .next-col.align-center .right-half {
+.next-col.align-left .inside-half, .next-col.align-center .inside-half {
   border-right: 3px solid white;
 }
 
-.next-col:first-child .grid-container .left-half, .next-col:last-child .grid-container .left-half {
+.next-col:first-child .grid-container .outside-half, .next-col:last-child .grid-container .outside-half {
   border-top: none;
 }
 
