@@ -3,37 +3,27 @@ import {TimelineMax} from "gsap";
 export default class ChartController {
 	/*@ngInject*/
 	constructor($scope, $stateParams, $state, $element, $timeout) {
-		let getWidth = () => {
-			let len = $scope.nexts.length - 1;
-			let offset = 30 * len;
-			let perc = len * 15;
-			return `calc(${perc}% + ${offset}px`
-		}
-
 		$scope.nexts = $state.current.params.nexts;
-    	$scope.bottomWidth = getWidth();
 
     	$scope.getHref = (next) =>
     		next.sref ? $state.href(next.sref) : next.href;
 
     	$scope.getTarget = (next) => next.sref ? "" : "_blank";
 
+    	let numNexts = $scope.nexts.length;
+    	$scope.itemWidth = `${100/numNexts}%`;
+
 		$element.hide();
     	$timeout(()=> {
     		$element.show();
-    		let bottomCells = $element.find(".bottom");
-    		let prevHeight = bottomCells.height();
+
+			let animLength = 0.3;
+			let containerWidth = `${Math.min(25*numNexts, 100)}%`;
 
     		let tl = new TimelineMax();
-    		let width = getWidth();
-    		tl.set($element.find("#bottom"), {width: "calc(0% + 0px)"}, 0)
-    		tl.set(bottomCells, {height: 0}, 0);
-    		tl.set($element.find(".info"), {display: "none"})
-
-    		tl.to($element.find("#bottom"), 0.3, {width});
-    		tl.to(bottomCells, 1, {height: prevHeight});
-    		tl.set($element.find(".info"), {display: ""})
-    		tl.staggerFrom($element.find(".info"), 0.3, {opacity: 0}, 0.2)
+    		tl.fromTo($element.find(".chart-container"), animLength, {width: 0}, {width: containerWidth});
+    		tl.from($element.find(".grid-container"), animLength, {height: 2});
+    		tl.staggerFrom($element.find(".info"), animLength, {opacity: 0}, animLength / 2)
     	})
 	}
 }

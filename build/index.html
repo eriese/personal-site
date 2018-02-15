@@ -22,12 +22,9 @@
       </div>
     </a>
   </div>
-  <table id="top" ng-style="{width: getWidth(currentPage.numNexts.length)}">
-    <tr>
-      <td id="left"></td>
-      <td id="right"></td>
-    </tr>
-  </table>
+  <div id="top">
+    <div class="divider"></div>
+  </div>
   <div ui-view></div>
 
   <div class="footer">
@@ -42,19 +39,24 @@
 <script src="bundle.js"></script>
 
 <script type="text/ng-template" id="_chart.html">
-  <div>
-    <table id="bottom" >
-      <tr>
-        <td ng-repeat="i in nexts" class="bottom" ng-if="!$last" ></td>
-      </tr>
-    </table>
-    <div class="info" data-ng-repeat="next in nexts">
-      <a ng-href="{{getHref(next)}}" target="{{getTarget(next)}}">
-        <div class="tint" ng-class="{magenta: color == 1, green: color == 0}">
-          <p class="text">{{next.title}}</p>
-          <img ng-if="next.href" class="out-arrow" src="./images/arrow-up.png" alt="go to site"/>
+  <div class="chart-page">
+    <div class="chart-container">
+      <div class="next-col" ng-repeat="next in nexts" ng-style="{width: itemWidth}">
+        <div class="grid-container" >
+          <div class="right-half"></div>
+          <div class="left-half"></div>
         </div>
-      </a>
+        <div class="table-row infos">
+          <div class="table-cell">
+            <div class="info">
+              <a ng-href="{{getHref(next)}}" target="{{getTarget(next)}}" class="tint" ng-class="{magenta: color == 1, green: color == 0}">
+                <p class="text">{{next.title}}</p>
+                <img ng-if="next.href" class="out-arrow" src="./images/arrow-up.png" alt="go to site"/>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </script>

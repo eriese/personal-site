@@ -59,6 +59,22 @@ a {
 }
 
 /**********************
+* ALL PAGES
+***********************/
+#top {
+  margin: 250px auto 0px;
+  text-align: center;
+}
+
+#top .divider {
+  display: inline-block;
+  height: 80px;
+  width: 0px;
+  border-right: 2px solid white;
+  margin-left: -2px;
+}
+
+/**********************
 * INFO PAGES
 ***********************/
 .text {
@@ -66,6 +82,96 @@ a {
   color: white;
   width: 100%;
 }
+
+.wrapper {
+  display: flex;
+  align-items: center;
+}
+
+/**********************
+* CHART PAGES
+***********************/
+.chart-page {
+  max-width: 1000px;
+  width: 90%;
+  margin: 0px auto;
+}
+
+/*clearfix*/
+.chart-container::after {
+  clear: both;
+  content: "";
+  display: block;
+}
+
+.chart-container {
+  display: inline-block;
+  margin: 0px auto;
+}
+
+.next-col {
+  float: left;
+}
+
+.grid-container > div {
+  width: 50%;
+  height: 100%;
+  float: left;
+  box-sizing: border-box;
+  border-top: 2px solid white;
+}
+
+.grid-container .right-half {
+  border-right: 2px solid white;
+}
+
+.next-col:first-child .grid-container .right-half, .next-col:last-child .grid-container .left-half {
+  border-top: none;
+}
+
+.grid-container {
+  height: 100px;
+  text-align: center;
+}
+
+.table-row.infos .table-cell div.info {
+  padding: 20px;
+  max-width: 175px;
+  width: 75%;
+  margin: 0px auto;
+}
+
+.table-row.infos .table-cell div.info a.tint {
+  height: 0px;
+  padding: 50% 0px;
+  width: 100%;
+  border-radius: 50%;
+  overflow: hidden;
+  text-transform: uppercase;
+  position: relative;
+}
+
+.table-row.infos .table-cell div.info a.tint p.text {
+  text-align: center;
+  width: 100%;
+  padding: 10px;
+}
+
+.out-arrow {
+  position: absolute;
+  width: 24%;
+  bottom: 15%;
+  left: 38%;
+  -webkit-transform: rotate(90deg);
+    -moz-transform: rotate(90deg);
+    -o-transform: rotate(90deg);
+    -ms-transform: rotate(90deg);
+    transform: rotate(90deg);
+}
+
+/**********************
+* CIRCLES
+***********************/
 .tint {
   width: 100%;
   height: 100%;
@@ -73,9 +179,6 @@ a {
   align-items: center;
 }
 
-/**********************
-* CIRCLES
-***********************/
 .green {
   background-color: rgba(0,240,10,0.2);
   color: black;
@@ -112,35 +215,6 @@ a {
   margin-bottom: 80px;
 }
 
-.wrapper {
-  display: flex;
-  align-items: center;
-}
-
-.info {
-  margin: 15px;
-  border-radius: 50%;
-  width: 15%;
-  /*max-width: 200px;*/
-  overflow: hidden;
-  text-align: center;
-  display: inline-block;
-  vertical-align: middle;
-  text-transform: uppercase;
-  position: relative;
-}
-.info:before{
-    content: "";
-    display: block;
-    padding-top: 100%;
-}
-.info a {
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  bottom: 0px;
-  right: 0px;
-}
 .name {
   position: absolute;
   top: 0px;
@@ -186,13 +260,7 @@ a {
 .enoch {
   background-image: url("../images/pattern_02.jpg");
 }
-.bottom {
-  border-top: 2px solid white;
-  border-left: 2px solid white;
-  border-right: 2px solid white;
-  height: 80px;
-  margin-top: -2px;
-}
+
 .img {
   display: inline-block;
   width: 400px;
@@ -206,42 +274,6 @@ a {
 }
 video {
   width: 100%;
-}
-.description {
-  display: inline-block;
-  width: 500px;
-  font-size: 30px;
-  line-height: 35px;
-  margin: 0px auto;
-}
-#left {
-  border-right: 2px solid white;
-  width: 50%;
-  /*height: 80px;*/
-}
-#right {
-  width: 50%;
-}
-#top {
-  border-bottom: 2px solid white;
-  height: 80px;
-  margin: 250px auto -2px auto;
-}
-#bottom {
-  margin: -2px auto;
-}
-#container {
-  width: 95%;
-  margin: 25px auto;
-  position: relative;
-}
-#more {
-  text-align: right;
-  font-size: 16px;
-  line-height: 16px;
-}
-#clearfix {
-  position: fixed;
 }
 
 #up-arrow {
@@ -263,17 +295,5 @@ video {
 .to-scroll .bottom {
   /*opacity: 0;*/
   height: 0px;
-}
-
-.out-arrow {
-  position: absolute;
-  width: 24%;
-  bottom: 15%;
-  left: 38%;
-  -webkit-transform: rotate(90deg);
-    -moz-transform: rotate(90deg);
-    -o-transform: rotate(90deg);
-    -ms-transform: rotate(90deg);
-    transform: rotate(90deg);
 }
 

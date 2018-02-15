@@ -8,18 +8,18 @@ export default class InfoController {
 		$scope.vidClick = ($event) => {
 			let video = $event.target;
 			if (video.paused) {
-				$(".img").css("width", "95%");
-				$("video").css({"width": "90%"});
+				angular.element(".img").css("width", "95%");
+				angular.element("video").css({"width": "90%"});
 				video.play();
 			}
 			else {
 				video.pause();
-				$(".img").css("width", "");
-				$("video").css({"width": "100%"});
+				angular.element(".img").css("width", "");
+				angular.element("video").css({"width": "100%"});
 			}
 		}
 
-		$element.hide();
+		// $element.hide();
 
     }
 }
