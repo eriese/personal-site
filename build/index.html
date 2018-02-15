@@ -40,8 +40,8 @@
 
 <script type="text/ng-template" id="_chart.html">
   <div class="chart-page">
-    <div class="chart-container">
-      <div class="next-col" ng-repeat="next in nexts" ng-style="{width: itemWidth}">
+    <div class="chart-container" ng-style="{width: containerWidth}">
+      <div class="next-col" ng-repeat="next in nexts" ng-style="{width: itemWidth}" ng-class="[textAlign($index)]">
         <div class="grid-container" >
           <div class="right-half"></div>
           <div class="left-half"></div>

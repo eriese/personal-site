@@ -70,8 +70,8 @@ a {
   display: inline-block;
   height: 80px;
   width: 0px;
-  border-right: 2px solid white;
-  margin-left: -2px;
+  border-right: 3px solid white;
+  margin-left: -3px;
 }
 
 /**********************
@@ -113,25 +113,44 @@ a {
   float: left;
 }
 
-.grid-container > div {
-  width: 50%;
-  height: 100%;
-  float: left;
-  box-sizing: border-box;
-  border-top: 2px solid white;
+.next-col.align-right {
+  text-align: right;
 }
 
-.grid-container .right-half {
-  border-right: 2px solid white;
-}
-
-.next-col:first-child .grid-container .right-half, .next-col:last-child .grid-container .left-half {
-  border-top: none;
+.next-col.align-left {
+  text-align: left;
 }
 
 .grid-container {
   height: 100px;
   text-align: center;
+  margin: 0px auto;
+  width: 100%;
+  display: inline-block;
+}
+
+.grid-container > div {
+  width: 50%;
+  height: 100%;
+  float: left;
+  box-sizing: border-box;
+  border-top: 3px solid white;
+}
+
+.next-col.align-right .grid-container > div {
+  float: right;
+}
+
+.next-col.align-right .left-half {
+  border-right: 3px solid white;
+}
+
+.next-col.align-left .right-half, .next-col.align-center .right-half {
+  border-right: 3px solid white;
+}
+
+.next-col:first-child .grid-container .left-half, .next-col:last-child .grid-container .left-half {
+  border-top: none;
 }
 
 .table-row.infos .table-cell div.info {
