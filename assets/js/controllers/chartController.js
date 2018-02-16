@@ -23,7 +23,11 @@ export default class ChartController {
     		return cls;
     	}
 
-    	$scope.getHref = (next) => next.sref ? $state.href(next.sref) : next.href;
+		let setup = false;
+    	$scope.getHref = (next) => {
+    		if (!setup) {return;}
+    		return next.sref ? $state.href(next.sref) : next.href;
+    	}
 
     	$scope.getTarget = (next) => next.sref ? "" : "_blank";
 
@@ -34,7 +38,7 @@ export default class ChartController {
     		let nextCols = $element.find(".next-col");
 
     		// first, hide all the borders
-    		let tl = new TimelineMax();
+    		let tl = new TimelineMax({onComplete: ()=>{setup = true; $scope.$apply()}});
     		tl.set(nextCols.find(".grid-container>div"), {'border-width': "0px 0px 0px 0px"})
 
 			// set a marker for the beginning of the timeline

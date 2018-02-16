@@ -32,7 +32,7 @@ app.config(function ($uiRouterProvider, $locationProvider) {
 })
 
 /*@ngInject*/
-app.run(function($rootScope, $state, $transitions, $trace) {
+app.run(function($rootScope, $state, $transitions, $window) {
 
   let onStateChange = (transition) => {
     let toState = transition.to().name;
@@ -55,6 +55,23 @@ app.run(function($rootScope, $state, $transitions, $trace) {
       console.log("up");
     }
   })
+
+  let keyedup = false;
+  let checkKey = (event) => !event.defaultPrevented && event.key == "ArrowUp" && angular.element("body").scrollTop() === 0 && $state.get("^").name !== "";
+
+  angular.element($window)
+    .keydown((event) => {
+      keyedup = checkKey(event);
+    })
+    .keyup((event) => {
+      if (event.defaultPrevented) {
+        return; // Do nothing if the event was already processed
+      }
+      if (keyedup && checkKey(event)) {
+        event.preventDefault();
+        $state.go("^");
+      }
+    })
 })
 
 app.controller("chartController", ChartContrller);

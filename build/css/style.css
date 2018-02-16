@@ -88,6 +88,14 @@ a {
   align-items: center;
 }
 
+.description {
+  display: inline-block;
+  width: 500px;
+  font-size: 30px;
+  line-height: 35px;
+  margin: 0px auto;
+}
+
 /**********************
 * CHART PAGES
 ***********************/
@@ -149,18 +157,18 @@ a {
   border-right: 3px solid white;
 }
 
-.next-col:first-child .grid-container .outside-half, .next-col:last-child .grid-container .outside-half {
+.next-col.end .grid-container .outside-half{
   border-top: none;
 }
 
-.table-row.infos .table-cell div.info {
+.next-col div.info {
   padding: 20px;
   max-width: 175px;
   width: 75%;
   margin: 0px auto;
 }
 
-.table-row.infos .table-cell div.info a.tint {
+.next-col div.info a.tint {
   height: 0px;
   padding: 50% 0px;
   width: 100%;
@@ -170,7 +178,7 @@ a {
   position: relative;
 }
 
-.table-row.infos .table-cell div.info a.tint p.text {
+.next-col div.info a.tint p.text {
   text-align: center;
   width: 100%;
   padding: 10px;
@@ -232,6 +240,7 @@ a {
   padding: 20px;
   border-radius: 10px;
   margin-bottom: 80px;
+  overflow: hidden;
 }
 
 .name {

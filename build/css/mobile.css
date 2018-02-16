@@ -1,6 +1,13 @@
 @media (max-width: 750px) {
-  table {
+  #top, .grid-container {
     display: none;
+  }
+  .chart-container {
+    width: 90% !important;
+  }
+
+  .next-col {
+    width: 100% !important;
   }
   .info {
     width: 70%;

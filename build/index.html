@@ -42,19 +42,15 @@
   <div class="chart-page">
     <div class="chart-container" ng-style="{width: containerWidth}">
       <div class="next-col" ng-repeat="next in nexts" ng-style="{width: itemWidth}" ng-class="[textAlign($index)]">
-        <div class="grid-container" >
+        <div class="grid-container">
           <div class="inside-half"></div>
           <div class="outside-half"></div>
         </div>
-        <div class="table-row infos">
-          <div class="table-cell">
-            <div class="info">
-              <a ng-href="{{getHref(next)}}" target="{{getTarget(next)}}" class="tint" ng-class="{magenta: color == 1, green: color == 0}">
-                <p class="text">{{next.title}}</p>
-                <img ng-if="next.href" class="out-arrow" src="./images/arrow-up.png" alt="go to site"/>
-              </a>
-            </div>
-          </div>
+        <div class="info">
+          <a ng-href="{{getHref(next)}}" target="{{getTarget(next)}}" class="tint" ng-class="{magenta: color == 1, green: color == 0}">
+            <p class="text">{{next.title}}</p>
+            <img ng-if="next.href" class="out-arrow" src="./images/arrow-up.png" alt="go to site"/>
+          </a>
         </div>
       </div>
     </div>

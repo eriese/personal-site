@@ -2,8 +2,9 @@ import {TweenMax} from "gsap";
 
 export default class InfoController {
 	/*@ngInject*/
-	constructor($scope, $stateParams, $element, $timeout) {
-		$scope.data = $stateParams;
+	constructor($scope, $transition$, $element, $timeout) {
+		$scope.data = $transition$.params();
+		console.log($transition$);
 
 		$scope.vidClick = ($event) => {
 			let video = $event.target;
@@ -19,7 +20,15 @@ export default class InfoController {
 			}
 		}
 
-		// $element.hide();
+		let animIn = () => {
+			$element.show();
+			let tl = new TimelineMax();
+			tl.from($element.find(".label"), 0.5, {height: 0, ease: Power4.easeIn});
+			tl.set($element.find(".label"), {clearProps: "all"});
+		}
+
+		$element.hide();
+		$timeout(animIn, 200);
 
     }
 }
