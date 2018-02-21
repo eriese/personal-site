@@ -1,12 +1,24 @@
 import {TweenMax} from "gsap";
 
-export default class InfoController {
-	/*@ngInject*/
-	constructor($scope, $transition$, $element, $timeout) {
-		$scope.data = $transition$.params();
-		console.log($transition$);
+const infoComponent = {
+	bindings: {
+		$transition$: '<'
+	},
 
-		$scope.vidClick = ($event) => {
+
+	controller: class InfoController {
+		/*@ngInject*/
+		constructor($element, $timeout) {
+			this._element = $element;
+			this._timeout = $timeout;
+		}
+
+		$onInit() {
+			this.data = this.$transition$.params();
+			this._element.hide()
+		}
+
+		vidClick($event) {
 			let video = $event.target;
 			if (video.paused) {
 				angular.element(".img").css("width", "95%");
@@ -20,15 +32,17 @@ export default class InfoController {
 			}
 		}
 
-		let animIn = () => {
-			$element.show();
-			let tl = new TimelineMax();
-			tl.from($element.find(".label"), 0.5, {height: 0, ease: Power4.easeIn});
-			tl.set($element.find(".label"), {clearProps: "all"});
+		$postLink() {
+			this._timeout(() => {
+				this._element.show();
+				let tl = new TimelineMax();
+				tl.from(this._element.find(".label"), 0.5, {height: 0, ease: Power4.easeIn});
+				tl.set(this._element.find(".label"), {clearProps: "all"});
+			});
 		}
+    },
 
-		$element.hide();
-		$timeout(animIn, 200);
-
-    }
+    templateUrl: "_info.html"
 }
+
+export default infoComponent;

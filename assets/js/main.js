@@ -3,8 +3,8 @@ import uiRouter from "@uirouter/angularjs";
 import ngSanitize from "angular-sanitize";
 
 import pages from "./pages";
-import ChartContrller from "./controllers/chartController";
-import InfoController from "./controllers/InfoController";
+import chartComponent from "./controllers/chartController";
+import infoComponent from "./controllers/InfoController";
 
 let app = angular.module("main", ["ngSanitize", "ui.router"]);
 
@@ -12,22 +12,18 @@ let app = angular.module("main", ["ngSanitize", "ui.router"]);
 app.config(function ($uiRouterProvider, $locationProvider) {
   $uiRouterProvider.urlService.rules.otherwise({state: "mainState"});
   // $locationProvider.html5Mode(true);
-  let makeView = (page)  => {
-    let {type} = page;
-    return {
-      "@" : {
-        templateUrl: `_${type}.html`,
-        controller: `${type}Controller`
-      }
-    }
-  };
+  let makeView = (page)  => {return {"@" : {component: `${page.type}Component`}};}
 
   const $stateRegistry = $uiRouterProvider.stateRegistry;
   for (let page of pages) {
     let {href: url, scope: params, state: name} = page;
     let views = makeView(page);
 
-    $stateRegistry.register({name, url, params, views});
+    $stateRegistry.register({name,
+      url,
+      params,
+      views
+    });
   };
 })
 
@@ -74,6 +70,6 @@ app.run(function($rootScope, $state, $transitions, $window) {
     })
 })
 
-app.controller("chartController", ChartContrller);
+app.component("chartComponent", chartComponent);
 
-app.controller("infoController", InfoController);
+app.component("infoComponent", infoComponent);

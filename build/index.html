@@ -40,33 +40,33 @@
 
 <script type="text/ng-template" id="_chart.html">
   <div class="chart-page">
-    <div class="chart-container" ng-style="{width: containerWidth}">
-      <div class="next-col" ng-repeat="next in nexts" ng-style="{width: itemWidth}" ng-class="[textAlign($index)]">
+    <ul class="chart-container" ng-style="{width: $ctrl.containerWidth}">
+      <li class="next-col" ng-repeat="next in $ctrl.nexts" ng-style="{width: $ctrl.itemWidth}" ng-class="[$ctrl.textAlign($index)]">
         <div class="grid-container">
           <div class="inside-half"></div>
           <div class="outside-half"></div>
         </div>
         <div class="info">
-          <a ng-href="{{getHref(next)}}" target="{{getTarget(next)}}" class="tint" ng-class="{magenta: color == 1, green: color == 0}">
+          <a ng-href="{{$ctrl.getHref(next)}}" target="{{$ctrl.getTarget(next)}}" class="tint" ng-class="{magenta: $root.color == 1, green: $root.color == 0}">
             <p class="text">{{next.title}}</p>
             <img ng-if="next.href" class="out-arrow" src="./images/arrow-up.png" alt="go to site"/>
           </a>
         </div>
-      </div>
-    </div>
+      </li>
+    </ul>
   </div>
 </script>
 
 <script type="text/ng-template" id="_info.html" class="html">
   <div class="label">
     <div class="wrapper">
-      <div ng-if="data.img || data.video" class="img">
-        <img ng-if="data.img" ng-src="{{data.img.src}}" alt="{{data.img.alt}}"/>
-        <video ng-if="data.video" ng-src="{{data.video.src}}" id="{{data.video.id}}" ng-click="vidClick($event)"></video>
-        {{data.img.desc}}
-        {{data.video.desc}}
+      <div ng-if="$ctrl.data.img || $ctrl.data.video" class="img">
+        <img ng-if="$ctrl.data.img" ng-src="{{$ctrl.data.img.src}}" alt="{{$ctrl.data.img.alt}}"/>
+        <video ng-if="$ctrl.data.video" ng-src="{{$ctrl.data.video.src}}" id="{{$ctrl.data.video.id}}" ng-click="vidClick($event)"></video>
+        {{$ctrl.data.img.desc}}
+        {{$ctrl.data.video.desc}}
       </div>
-      <div ng-class="{description: data.img || data.video}" ng-bind-html="data.text">
+      <div ng-class="{description: $ctrl.data.img || $ctrl.data.video}" ng-bind-html="$ctrl.data.text">
       </div>
     </div>
   </div>
