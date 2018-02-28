@@ -1,4 +1,4 @@
-../<!doctype html>
+<!doctype html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -15,17 +15,16 @@
   <div id="up-arrow">
     <a ng-if="upHref" ng-href="{{upHref}}"><img src="./images/arrow-up.png" alt="previous level"/></a>
   </div>
-  <div class="name" ng-class="category">
-    <a ui-sref="enoch">
-      <div class="tint" ng-class="{magenta: color == 0, green: color == 1}">
-        <h1>{{title}}</h1>
-      </div>
-    </a>
+  <div id="page-container">
+    <div class="name enoch">
+      <a ui-sref="enoch">
+        <div class="tint magenta">
+          <h1>Enoch Riese</h1>
+        </div>
+      </a>
+    </div>
+    <div ui-view id="root-view"></div>
   </div>
-  <div id="top">
-    <div class="divider"></div>
-  </div>
-  <div ui-view></div>
 
   <div class="footer">
     <span>more info</span>
@@ -39,25 +38,36 @@
 <script src="bundle.js"></script>
 
 <script type="text/ng-template" id="_chart.html">
+  <div class="top">
+      <div class="divider"></div>
+    </div>
   <div class="chart-page">
     <ul class="chart-container" ng-style="{width: $ctrl.containerWidth}">
-      <li class="next-col" ng-repeat="next in $ctrl.nexts" ng-style="{width: $ctrl.itemWidth}" ng-class="[$ctrl.textAlign($index)]">
-        <div class="grid-container">
-          <div class="inside-half"></div>
-          <div class="outside-half"></div>
-        </div>
-        <div class="info">
-          <a ng-href="{{$ctrl.getHref(next)}}" target="{{$ctrl.getTarget(next)}}" class="tint" ng-class="{magenta: $root.color == 1, green: $root.color == 0}">
-            <p class="text">{{next.title}}</p>
-            <img ng-if="next.href" class="out-arrow" src="./images/arrow-up.png" alt="go to site"/>
-          </a>
-        </div>
-      </li>
+      <chart-circle ng-repeat="next in $ctrl.nexts" info="next" index="$index" item-width="$ctrl.itemWidth" on-click="$ctrl.setClicked(el)"></chart-circle>
     </ul>
   </div>
+  <div class="sub-view" ui-view parent-ind="$ctrl.clicked"></div>
+</script>
+
+<script type="text/ng-template" id="_chart-circle.html">
+  <li class="next-col" ng-style="{width: $ctrl.itemWidth}" ng-class="[$ctrl.textAlign]">
+    <div class="grid-container">
+      <div class="inside-half"></div>
+      <div class="outside-half"></div>
+    </div>
+    <div class="info">
+      <a ng-href="{{$ctrl.getHref()}}" target="{{$ctrl.target}}" class="tint" ng-class="{magenta: $ctrl.chartCtrl.color == 1, green: $ctrl.chartCtrl.color == 0}" ng-click="$ctrl.click()">
+        <p class="text">{{$ctrl.info.title}}</p>
+        <img ng-if="$ctrl.info.href" class="out-arrow" src="./images/arrow-up.png" alt="go to site"/>
+      </a>
+    </div>
+  </li>
 </script>
 
 <script type="text/ng-template" id="_info.html" class="html">
+  <div class="top">
+    <div class="divider"></div>
+  </div>
   <div class="label">
     <div class="wrapper">
       <div ng-if="$ctrl.data.img || $ctrl.data.video" class="img">

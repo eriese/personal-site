@@ -5,6 +5,7 @@ import ngSanitize from "angular-sanitize";
 import pages from "./pages";
 import chartComponent from "./controllers/chartController";
 import infoComponent from "./controllers/InfoController";
+import chartCircleComponent from "./controllers/chartCircleComponent";
 
 let app = angular.module("main", ["ngSanitize", "ui.router"]);
 
@@ -12,44 +13,77 @@ let app = angular.module("main", ["ngSanitize", "ui.router"]);
 app.config(function ($uiRouterProvider, $locationProvider) {
   $uiRouterProvider.urlService.rules.otherwise({state: "mainState"});
   // $locationProvider.html5Mode(true);
-  let makeView = (page)  => {return {"@" : {component: `${page.type}Component`}};}
+  let makeView = (page)  => {
+    let views = {};
+    let parent = page.state.split(".")
+    // parent = parent.length == 1 ? "@" : parent.join("");
+    // parent.pop()
+    parent = parent.join("") + (parent.length == 1 ? "" : "@^");
+    views[parent] = `${page.type}Component`;
+    return views;
+  }
+
+  let makeResolves = (page) => {
+    return {
+      pageInfo: () => page.scope
+    };
+  }
 
   const $stateRegistry = $uiRouterProvider.stateRegistry;
   for (let page of pages) {
     let {href: url, scope: params, state: name} = page;
     let views = makeView(page);
+    let resolve = makeResolves(page);
 
     $stateRegistry.register({name,
       url,
       params,
-      views
+      // views,
+      resolve,
+      component: `${page.type}Component`
     });
   };
 })
 
 /*@ngInject*/
-app.run(function($rootScope, $state, $transitions, $window) {
+app.run(function($rootScope, $state, $transitions, $window, $q, rootTlService) {
 
   let onStateChange = (transition) => {
     let toState = transition.to().name;
     let toParams = transition.params();
     $rootScope.upHref = $state.href("^");
-    $rootScope.title = toParams.title;
-    $rootScope.category = toState.split(".")[1] || "enoch";
-    $rootScope.color = toParams.color;
+    // $rootScope.title = toParams.title;
+    // $rootScope.category = toState.split(".")[1] || "enoch";
+    // $rootScope.color = toParams.color;
   }
 
   $transitions.onSuccess({}, onStateChange);
 
-  $transitions.onStart({}, (transition) => {
-    let toState = transition.to().name;
-    let fromState = transition.from().name;
+  // $transitions.onStart({}, (transition) => {
+  //   let toState = transition.to().name;
+  //   let fromState = transition.from().name;
 
-    if (toState.includes(fromState)) {
-      console.log("down");
-    } else if (fromState.includes(toState)) {
-      console.log("up");
-    }
+  //   if (toState.includes(fromState)) {
+  //     console.log("down");
+  //   } else if (fromState.includes(toState)) {
+  //     console.log("up");
+  //   }
+  // })
+
+  $transitions.onEnter({}, function(transition, state) {
+    console.log('Transition #' + transition.$id + ' Entered ' + state.name);
+    // return new Promise(resolve => setTimeout(resolve, 1000))
+
+  })
+
+  $transitions.onExit({}, function(transition, state) {
+    let exitTl = rootTlService.getLastTl();
+    let deferred = $q.defer();
+
+    exitTl.eventCallback("onReverseComplete", deferred.resolve);
+    exitTl.reverse();
+
+    return deferred.promise;
   })
 
   let keyedup = false;
@@ -73,3 +107,30 @@ app.run(function($rootScope, $state, $transitions, $window) {
 app.component("chartComponent", chartComponent);
 
 app.component("infoComponent", infoComponent);
+
+app.component("chartCircle", chartCircleComponent);
+
+app.service("rootTlService", class RootTlService {
+  constructor() {
+    this.currentTls = [];
+  }
+
+  addToTl(tl) {
+    let numTls = this.currentTls.length;
+    if (numTls > 0) {
+      let lastTl = this.currentTls[numTls -1];
+      if (lastTl.progress() < 1) {
+        let lastLabel = lastTl.getLabelBefore(lastTl.endTime());
+        let lastTime = lastTl.getLabelTime(lastLabel);
+
+        tl.delay(lastTime + lastTl.delay());
+      }
+    }
+
+    this.currentTls.push(tl);
+  }
+
+  getLastTl() {
+    return this.currentTls.pop();
+  }
+})

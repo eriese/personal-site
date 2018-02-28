@@ -8,14 +8,15 @@ const infoComponent = {
 
 	controller: class InfoController {
 		/*@ngInject*/
-		constructor($element, $timeout) {
-			this._element = $element;
-			this._timeout = $timeout;
+		constructor($element, $timeout, rootTlService) {
+			this._$element = $element;
+			this._$timeout = $timeout;
+			this._rootTlService = rootTlService;
 		}
 
 		$onInit() {
 			this.data = this.$transition$.params();
-			this._element.hide()
+			this._$element.hide()
 		}
 
 		vidClick($event) {
@@ -33,11 +34,14 @@ const infoComponent = {
 		}
 
 		$postLink() {
-			this._timeout(() => {
-				this._element.show();
-				let tl = new TimelineMax();
-				tl.from(this._element.find(".label"), 0.5, {height: 0, ease: Power4.easeIn});
-				tl.set(this._element.find(".label"), {clearProps: "all"});
+			this._$timeout(() => {
+				this._$element.show();
+				this.tl = new TimelineMax();
+				this.tl.from(this._$element.find(">.top>.divider"), 0.4, {height: 0, ease: Linear.easeIn})
+				this.tl.from(this._$element.find(".label"), 0.5, {height: 0, 'padding-top': 0, 'padding-bottom': 0, ease: Power4.easeIn});
+				this.tl.set(this._$element.find(".label"), {clearProps: "all"});
+
+				this._rootTlService.addToTl(this.tl);
 			});
 		}
     },
