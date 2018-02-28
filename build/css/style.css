@@ -68,20 +68,21 @@ a {
 }
 
 #root-view {
-
+  max-width: 1000px;
+  width: 90%;
+  margin: 0px auto;
 }
 .top {
-  margin: 0px auto;
+  margin: 0px 0px 0px -3px;
   text-align: center;
   height: 80px;
 }
 
 .top .divider {
-  display: inline-block;
   height: 100%;
   width: 0px;
+  margin: 0px auto;
   border-right: 3px solid white;
-  margin-left: -3px;
 }
 
 /**********************
@@ -110,9 +111,6 @@ a {
 * CHART PAGES
 ***********************/
 .chart-page {
-  max-width: 1000px;
-  width: 90%;
-  margin: 0px auto;
   text-align: center;
 }
 
@@ -124,13 +122,17 @@ a {
 }
 
 .sub-container, .chart-container {
-  display: inline-block;
+  /*display: inline-block;*/
   margin: 0px auto;
 }
 
-/*.sub-view {
-  min-height: 1px;
-}*/
+.sub-view {
+  width: 100%;
+}
+
+chart-circle {
+  display: block;
+}
 
 .next-col {
   float: left;
@@ -138,12 +140,14 @@ a {
   margin: 0;
 }
 
-.next-col.align-right {
+.next-col > chart-circle > .align-right {
   text-align: right;
+  float: right;
 }
 
-.next-col.align-left {
+.next-col > chart-circle > .align-left {
   text-align: left;
+  float:left;
 }
 
 .grid-container {
@@ -151,7 +155,7 @@ a {
   text-align: center;
   margin: 0px auto;
   width: 100%;
-  display: inline-block;
+  /*display: inline-block;*/
 }
 
 .grid-container > div {
@@ -162,19 +166,19 @@ a {
   border-top: 3px solid white;
 }
 
-.next-col.align-right > .grid-container > div {
+.next-col > chart-circle > .align-right.grid-container > div {
   float: right;
 }
 
-.next-col.align-right > .grid-container > .outside-half {
+.next-col > chart-circle > .align-right.grid-container > .outside-half {
   border-right: 3px solid white;
 }
 
-.next-col.align-left > .grid-container > .inside-half, .next-col.align-center > .grid-container > .inside-half {
+.next-col > chart-circle > .align-left.grid-container > .inside-half, .next-col > chart-circle > .align-center.grid-container > .inside-half {
   border-right: 3px solid white;
 }
 
-.next-col.end > .grid-container > .outside-half{
+.next-col > chart-circle > .end.grid-container > .outside-half{
   border-top: none;
 }
 
@@ -183,6 +187,7 @@ a {
   max-width: 175px;
   width: 75%;
   margin: 0px auto;
+  clear: both;
 }
 
 .next-col div.info a.tint {
@@ -261,8 +266,8 @@ a {
 }
 
 .name {
-  display: inline-block;
-  margin: 10px;
+  display: block;
+  margin: 10px auto;
   border-radius: 50%;
   width: 200px;
   height: 200px;
@@ -321,6 +326,7 @@ video {
   position: absolute;
   top: 50px;
   left: 50px;
+  z-index: 1;
 }
 
 .hidden {

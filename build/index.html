@@ -42,26 +42,26 @@
       <div class="divider"></div>
     </div>
   <div class="chart-page">
-    <ul class="chart-container" ng-style="{width: $ctrl.containerWidth}">
-      <chart-circle ng-repeat="next in $ctrl.nexts" info="next" index="$index" item-width="$ctrl.itemWidth" on-click="$ctrl.setClicked(el)"></chart-circle>
+    <ul class="chart-container" ng-style="{width: $ctrl.perc($ctrl.containerWidth)}">
+      <li class="next-col" ng-style="{width: $ctrl.perc($ctrl.itemWidth)}" ng-repeat="next in $ctrl.nexts">
+        <chart-circle info="next" index="$index" on-click="$ctrl.setClicked(element, index)"></chart-circle>
+      </li>
     </ul>
   </div>
-  <div class="sub-view" ui-view parent-ind="$ctrl.clicked"></div>
+  <div class="sub-view" ui-view parent-ind="$ctrl.clicked" parent-margin="$ctrl.subMargin"></div>
 </script>
 
 <script type="text/ng-template" id="_chart-circle.html">
-  <li class="next-col" ng-style="{width: $ctrl.itemWidth}" ng-class="[$ctrl.textAlign]">
-    <div class="grid-container">
-      <div class="inside-half"></div>
-      <div class="outside-half"></div>
-    </div>
-    <div class="info">
-      <a ng-href="{{$ctrl.getHref()}}" target="{{$ctrl.target}}" class="tint" ng-class="{magenta: $ctrl.chartCtrl.color == 1, green: $ctrl.chartCtrl.color == 0}" ng-click="$ctrl.click()">
-        <p class="text">{{$ctrl.info.title}}</p>
-        <img ng-if="$ctrl.info.href" class="out-arrow" src="./images/arrow-up.png" alt="go to site"/>
-      </a>
-    </div>
-  </li>
+  <div class="grid-container" ng-class="[$ctrl.textAlign]">
+    <div class="inside-half"></div>
+    <div class="outside-half"></div>
+  </div>
+  <div class="info">
+    <a ng-href="{{$ctrl.getHref()}}" target="{{$ctrl.target}}" class="tint" ng-class="{magenta: $ctrl.chartCtrl.color == 1, green: $ctrl.chartCtrl.color == 0}" ng-click="$ctrl.click()">
+      <p class="text">{{$ctrl.info.title}}</p>
+      <img ng-if="$ctrl.info.href" class="out-arrow" src="./images/arrow-up.png" alt="go to site"/>
+    </a>
+  </div>
 </script>
 
 <script type="text/ng-template" id="_info.html" class="html">

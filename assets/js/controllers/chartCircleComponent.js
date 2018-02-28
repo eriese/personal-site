@@ -14,7 +14,6 @@ const chartCircleComponent = {
 	bindings: {
 		info: "<",
 		index: "<",
-		itemWidth: "<",
 		onClick: "&"
 	},
 	require: {
@@ -42,12 +41,12 @@ const chartCircleComponent = {
 			// this.viewClass = sref ? sref.split(".").join("") : "";
 
 			if (sref && this._$state.includes(sref)) {
-				this.onClick({el: this._$element});
+				this.onClick({element: this._$element, index: this.index});
 			}
 		}
 
 		click() {
-			this.onClick({el: this._$element});
+			this.onClick({element: this._$element, index: this.index});
 		}
 
 		// onClick($event) {

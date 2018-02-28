@@ -1,8 +1,20 @@
 import {TweenMax} from "gsap";
 
+let getPosDif = (el) => {
+	let elOff = el.find(".info").position();
+	let width = angular.element(window).width();
+
+	let top = -elOff.top;
+	let left = (width/2 - elOff.left) * 100 / width + "%";
+
+	return {top, left};
+}
+
 const infoComponent = {
 	bindings: {
-		$transition$: '<'
+		data: '<pageInfo',
+		parentInd: "<",
+		parentMargin: "<"
 	},
 
 
@@ -15,7 +27,6 @@ const infoComponent = {
 		}
 
 		$onInit() {
-			this.data = this.$transition$.params();
 			this._$element.hide()
 		}
 
@@ -37,6 +48,13 @@ const infoComponent = {
 			this._$timeout(() => {
 				this._$element.show();
 				this.tl = new TimelineMax();
+				// first blow up the parent circle and center it
+				if (this.parentInd !== undefined) {
+					this.tl.add("endEl");
+					this.tl.to(angular.element("#page-container"), 0.4, getPosDif(this.parentInd), "endEl");
+					this.tl.set(this._$element.parent(), {'margin-left': this.parentMargin}, "endEl");
+				}
+				this.tl.add("afterEndEl");
 				this.tl.from(this._$element.find(">.top>.divider"), 0.4, {height: 0, ease: Linear.easeIn})
 				this.tl.from(this._$element.find(".label"), 0.5, {height: 0, 'padding-top': 0, 'padding-bottom': 0, ease: Power4.easeIn});
 				this.tl.set(this._$element.find(".label"), {clearProps: "all"});

@@ -13,15 +13,7 @@ let app = angular.module("main", ["ngSanitize", "ui.router"]);
 app.config(function ($uiRouterProvider, $locationProvider) {
   $uiRouterProvider.urlService.rules.otherwise({state: "mainState"});
   // $locationProvider.html5Mode(true);
-  let makeView = (page)  => {
-    let views = {};
-    let parent = page.state.split(".")
-    // parent = parent.length == 1 ? "@" : parent.join("");
-    // parent.pop()
-    parent = parent.join("") + (parent.length == 1 ? "" : "@^");
-    views[parent] = `${page.type}Component`;
-    return views;
-  }
+  let makeView = (page)  => `${page.type}Component`
 
   let makeResolves = (page) => {
     return {
@@ -32,15 +24,14 @@ app.config(function ($uiRouterProvider, $locationProvider) {
   const $stateRegistry = $uiRouterProvider.stateRegistry;
   for (let page of pages) {
     let {href: url, scope: params, state: name} = page;
-    let views = makeView(page);
+    let component = makeView(page);
     let resolve = makeResolves(page);
 
     $stateRegistry.register({name,
       url,
       params,
-      // views,
       resolve,
-      component: `${page.type}Component`
+      component
     });
   };
 })
@@ -80,8 +71,16 @@ app.run(function($rootScope, $state, $transitions, $window, $q, rootTlService) {
     let exitTl = rootTlService.getLastTl();
     let deferred = $q.defer();
 
-    exitTl.eventCallback("onReverseComplete", deferred.resolve);
-    exitTl.reverse();
+    let ret = transition.retained();
+    let to = transition.to();
+
+    if (to == ret[ret.length -1]) {
+      exitTl.eventCallback("onReverseComplete", deferred.resolve);
+      exitTl.reverse();
+    } else {
+      exitTl.call(deferred.resolve, null, null, "afterEndEl");
+      exitTl.tweenFromTo(exitTl.duration(), "afterEndEl");
+    }
 
     return deferred.promise;
   })

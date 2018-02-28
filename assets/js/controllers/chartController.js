@@ -1,13 +1,12 @@
 import {TimelineMax} from "gsap";
-const animLength = 2;
+const animLength = 0.4;
 
 let getPosDif = (el) => {
-	let mainPos = angular.element("#page-container > div.name").position();
-	let elOff = el.find(".info").offset();
+	let elOff = el.find(".info").position();
 	let width = angular.element(window).width();
 
-	let top = mainPos.top - elOff.top;
-	let left = (mainPos.left - elOff.left) * 100 / width + "%";
+	let top = -elOff.top;
+	let left = (width/2 - elOff.left) * 100 / width + "%";
 
 	return {top, left};
 }
@@ -15,21 +14,22 @@ let getPosDif = (el) => {
 let animIn = (ctrl) => {
 	ctrl._$element.show();
 
-	let nextCols = ctrl._$element.find(">.chart-page>.chart-container>chart-circle>.next-col");
+	let nextCols = ctrl._$element.find(">.chart-page>.chart-container>.next-col>chart-circle");
 
 	let tl = new TimelineMax({onComplete: ()=>{ctrl.setup = true; ctrl._$scope.$apply()}});
 
+	// first, hide all the borders
+	tl.set(nextCols.find(">.grid-container>div"), {'border-width': 0})
+
 	// first blow up the parent circle and center it
 	if (ctrl.parentInd !== undefined) {
-		// let itEl = ctrl._$element.parent().siblings(".chart-page").find(".info").get(ctrl.parentInd);
-		// itEl = angular.element(itEl);
-		// tl.set(ctrl._$element, {marginLeft: -(itEl.position().left)});
-		// tl.to(itEl, animLength, {width: 200, 'max-width': 200}, "endEl");
+		tl.add("endEl");
+		tl.set(ctrl._$element.parent(), {'margin-left': ctrl.parentMargin}, "endEl");
 		tl.to(angular.element("#page-container"), animLength, getPosDif(ctrl.parentInd), "endEl");
 	}
 
-	// first, hide all the borders
-	tl.set(nextCols.find(">.grid-container>div"), {'border-width': "0px 0px 0px 0px"})
+	tl.add("afterEndEl");
+
 	tl.from(ctrl._$element.find(">.top"), animLength, {height: 0, ease: Linear.easeIn})
 
 	// set a marker for the beginning of the timeline
@@ -51,7 +51,7 @@ let animIn = (ctrl) => {
 		}
 
 		// // simultaneously reset border widths for these objects
-		tl.set(curCols.find(">.grid-container>div"), {clearProps: "border-width"}, curMarker);
+		tl.set(curCols.find(">.grid-container>div"), {"border-width": 3}, curMarker);
 		// and scroll out the width
 		tl.from(curCols.find(">.grid-container"), animLength, {width: "0%", ease: Linear.easeIn}, curMarker);
 
@@ -69,7 +69,7 @@ let animIn = (ctrl) => {
 		}
 
 		// scroll out the height at whatever marker is current
-		tl.from(curCols.find(">.grid-container"), animLength, {height: 3, ease: Linear.easeIn}, curMarker);
+		tl.from(curCols.find(">.grid-container"), animLength, {height: 0, ease: Linear.easeIn}, curMarker);
 
 		// make a new marker to be used by the last actions and the first actions of the next set
 		curMarker = `pos${i}b`
@@ -83,9 +83,9 @@ let animIn = (ctrl) => {
 
 const chartComponent = {
 	bindings: {
-		$transition$: '<',
 		pageInfo: "<",
-		parentInd: "<"
+		parentInd: "<",
+		parentMargin: "<"
 	},
 	templateUrl: "_chart.html",
 	controller: class ChartController {
@@ -106,8 +106,8 @@ const chartComponent = {
 			this.color = this.pageInfo.color;
 
 			let numNexts = this.nexts.length;
-			this.itemWidth = `${100/numNexts}%`;
-			this.containerWidth = `${Math.min(25*numNexts, 100)}%`;
+			this.itemWidth = 100/numNexts;
+			this.containerWidth = Math.min(25*numNexts, 100);
 
 			this.middleInd = Math.floor(numNexts / 2);
 			this.lastInd = numNexts - 1;
@@ -131,12 +131,19 @@ const chartComponent = {
 			});
 		}
 
+		perc(num) {
+			return `${num}%`;
+		}
+
 		viewClass(next) {
 			return next.sref ? next.sref.split(".").join("") : "";
 		}
 
-		setClicked(el) {
-			this.clicked = el;
+		setClicked(element, index) {
+			this.clicked = element;
+			let numShift = this.itemWidth * (index - this.middleInd);
+			if (this.isEven) numShift *= 0.5;
+			this.subMargin = this.perc(numShift * this.containerWidth  / 100);
 		}
 	}
 }
