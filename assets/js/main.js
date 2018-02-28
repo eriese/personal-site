@@ -78,8 +78,8 @@ app.run(function($rootScope, $state, $transitions, $window, $q, rootTlService) {
       exitTl.eventCallback("onReverseComplete", deferred.resolve);
       exitTl.reverse();
     } else {
-      exitTl.call(deferred.resolve, null, null, "afterEndEl");
-      exitTl.tweenFromTo(exitTl.duration(), "afterEndEl");
+      exitTl.call(deferred.resolve, null, null, "afterCenterParent");
+      exitTl.tweenFromTo(exitTl.duration(), "afterCenterParent");
     }
 
     return deferred.promise;

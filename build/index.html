@@ -70,13 +70,13 @@
   </div>
   <div class="label">
     <div class="wrapper">
-      <div ng-if="$ctrl.data.img || $ctrl.data.video" class="img">
-        <img ng-if="$ctrl.data.img" ng-src="{{$ctrl.data.img.src}}" alt="{{$ctrl.data.img.alt}}"/>
-        <video ng-if="$ctrl.data.video" ng-src="{{$ctrl.data.video.src}}" id="{{$ctrl.data.video.id}}" ng-click="vidClick($event)"></video>
-        {{$ctrl.data.img.desc}}
-        {{$ctrl.data.video.desc}}
+      <div ng-if="$ctrl.pageInfo.img || $ctrl.pageInfo.video" class="img">
+        <img ng-if="$ctrl.pageInfo.img" ng-src="{{$ctrl.pageInfo.img.src}}" alt="{{$ctrl.pageInfo.img.alt}}"/>
+        <video ng-if="$ctrl.pageInfo.video" ng-src="{{$ctrl.pageInfo.video.src}}" id="{{$ctrl.pageInfo.video.id}}" ng-click="$ctrl.vidClick($event)"></video>
+        {{$ctrl.pageInfo.img.desc}}
+        {{$ctrl.pageInfo.video.desc}}
       </div>
-      <div ng-class="{description: $ctrl.data.img || $ctrl.data.video}" ng-bind-html="$ctrl.data.text">
+      <div ng-class="{description: $ctrl.pageInfo.img || $ctrl.pageInfo.video}" ng-bind-html="$ctrl.pageInfo.text">
       </div>
     </div>
   </div>

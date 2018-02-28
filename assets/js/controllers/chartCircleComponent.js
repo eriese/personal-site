@@ -1,4 +1,4 @@
-import {TimelineMax} from "gsap";
+// import {TimelineMax} from "gsap";
 
 let getTextAlign = (ctrl) => {
 	let cls = "align-";
@@ -38,7 +38,6 @@ const chartCircleComponent = {
 			let sref = this.info.sref;
 			this.target = sref ? "" : "_blank";
 			this.textAlign = getTextAlign(this);
-			// this.viewClass = sref ? sref.split(".").join("") : "";
 
 			if (sref && this._$state.includes(sref)) {
 				this.onClick({element: this._$element, index: this.index});
@@ -48,23 +47,6 @@ const chartCircleComponent = {
 		click() {
 			this.onClick({element: this._$element, index: this.index});
 		}
-
-		// onClick($event) {
-		// 	// if (this.target) {
-		// 	// 	return;
-		// 	// }
-
-		// 	// $event.preventDefault();
-		// 	// let infEl = this._$element.find(".info");
-		// 	// let infPos = infEl.position();
-		// 	// infPos.position = "absolute";
-		// 	// infPos.width = infEl.width();
-		// 	// infEl.css(infPos);
-
-		// 	// angular.element(".name").after(infEl);
-		// 	// infEl.addClass("name");
-
-		// }
 	}
 
 };

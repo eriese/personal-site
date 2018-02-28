@@ -1,36 +1,12 @@
-import {TimelineMax} from "gsap";
-const animLength = 0.4;
+import AnimatedController, {animLength, defaultAnimatedBindings} from "./AnimatedController";
 
-let getPosDif = (el) => {
-	let elOff = el.find(".info").position();
-	let width = angular.element(window).width();
-
-	let top = -elOff.top;
-	let left = (width/2 - elOff.left) * 100 / width + "%";
-
-	return {top, left};
-}
-
-let animIn = (ctrl) => {
-	ctrl._$element.show();
+let animIn = (ctrl, tl) => {
+	tl.eventCallback("onComplete", ()=> {ctrl.setup = true; ctrl._$scope.$apply();})
 
 	let nextCols = ctrl._$element.find(">.chart-page>.chart-container>.next-col>chart-circle");
 
-	let tl = new TimelineMax({onComplete: ()=>{ctrl.setup = true; ctrl._$scope.$apply()}});
-
 	// first, hide all the borders
-	tl.set(nextCols.find(">.grid-container>div"), {'border-width': 0})
-
-	// first blow up the parent circle and center it
-	if (ctrl.parentInd !== undefined) {
-		tl.add("endEl");
-		tl.set(ctrl._$element.parent(), {'margin-left': ctrl.parentMargin}, "endEl");
-		tl.to(angular.element("#page-container"), animLength, getPosDif(ctrl.parentInd), "endEl");
-	}
-
-	tl.add("afterEndEl");
-
-	tl.from(ctrl._$element.find(">.top"), animLength, {height: 0, ease: Linear.easeIn})
+	tl.set(nextCols.find(">.grid-container>div"), {'border-width': 0}, "beginning")
 
 	// set a marker for the beginning of the timeline
 	let curMarker = `first`;
@@ -82,24 +58,19 @@ let animIn = (ctrl) => {
 
 
 const chartComponent = {
-	bindings: {
-		pageInfo: "<",
-		parentInd: "<",
-		parentMargin: "<"
-	},
+	bindings: defaultAnimatedBindings,
 	templateUrl: "_chart.html",
-	controller: class ChartController {
+	controller: class ChartController extends AnimatedController{
 		/*@ngInject*/
 		constructor($scope, $state, $element, $timeout, rootTlService) {
+			super($element, $timeout, rootTlService);
 			this._$state = $state;
-			this._$element = $element;
-			this._$timeout = $timeout;
 			this._$scope = $scope;
-			this._rootTlService = rootTlService;
 		}
 
 		$onInit() {
-			this._$element.hide();
+			super.$onInit();
+
 			this.setup = true;
 
 			this.nexts = this.pageInfo.nexts;
@@ -113,22 +84,11 @@ const chartComponent = {
 			this.lastInd = numNexts - 1;
 			this.isEven = numNexts % 2 === 0;
 
-			// for (let i=0; i < this.nexts.length; i++) {
-			// 	let item = this.nexts[i];
-			// 	if (item.sref && this._$state.includes(item.sref)) {
-			// 		this.clicked = i;
-			// 		break;
-			// 	}
-			// }
-
 			console.log(this.parentInd);
 		}
 
-		$postLink() {
-			this._$timeout(() => {
-				this.tl = animIn(this);
-				this._rootTlService.addToTl(this.tl);
-			});
+		doAnim() {
+			animIn(this, this.tl);
 		}
 
 		perc(num) {
