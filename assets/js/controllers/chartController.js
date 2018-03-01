@@ -83,8 +83,6 @@ const chartComponent = {
 			this.middleInd = Math.floor(numNexts / 2);
 			this.lastInd = numNexts - 1;
 			this.isEven = numNexts % 2 === 0;
-
-			console.log(this.parentInd);
 		}
 
 		doAnim() {

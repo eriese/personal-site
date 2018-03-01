@@ -38,6 +38,7 @@ const chartCircleComponent = {
 			let sref = this.info.sref;
 			this.target = sref ? "" : "_blank";
 			this.textAlign = getTextAlign(this);
+			this.bgClass = sref ? sref.split(".")[1] : "";
 
 			if (sref && this._$state.includes(sref)) {
 				this.onClick({element: this._$element, index: this.index});

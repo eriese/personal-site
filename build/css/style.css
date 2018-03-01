@@ -190,6 +190,14 @@ chart-circle {
   clear: both;
 }
 
+.next-col div.info div.bg {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  z-index: -1;
+  opacity: 0;
+}
+
 .next-col div.info a.tint {
   height: 0px;
   padding: 50% 0px;
@@ -283,19 +291,14 @@ chart-circle {
 * BACKGROUNDS
 ***********************/
 .coder {
- background-image: url("../images/gplaypattern.png");
-}
-.throbber {
-  display: none;
+  background-image: url("../images/gplaypattern.png");
 }
 .puppeteer {
- background-image: url("../images/norwegian_rose.png");
+  background-image: url("../images/norwegian_rose.png");
 }
-
 .skills {
- background-image: url("../images/greyfloral.png");
+  background-image: url("../images/greyfloral.png");
 }
-
 .exhibitionist {
   background-image: url("../images/arab_tile_@2x.png");
 }
@@ -307,6 +310,9 @@ chart-circle {
   background-image: url("../images/pattern_02.jpg");
 }
 
+.throbber {
+  display: none;
+}
 .img {
   display: inline-block;
   width: 400px;

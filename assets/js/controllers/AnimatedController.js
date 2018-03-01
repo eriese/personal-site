@@ -5,17 +5,19 @@ const animLength = 0.3;
 const defaultAnimatedBindings = {
 	pageInfo: "<",
 	parentInd: "<",
-	parentMargin: "<"
+	parentMargin: "<",
+	$transition$: "<"
 }
 
 export {animLength, defaultAnimatedBindings};
 
 let getPosDif = (el) => {
 	let elOff = el.find(".info").position();
-	let width = angular.element(window).width();
+	let elWidth = el.width();
+	let contWidth = angular.element("#page-container").width();
 
 	let top = -elOff.top;
-	let left = (width/2 - elOff.left) * 100 / width + "%";
+	let left = (contWidth/2 - (elOff.left + elWidth/2)) * 100 / contWidth + "%";
 
 	return {top, left};
 }
@@ -28,7 +30,7 @@ export default class AnimatedController {
 	}
 
 	$onInit() {
-		this._$element.hide()
+		this._$element.hide();
 	}
 
 	$postLink() {
@@ -51,11 +53,14 @@ export default class AnimatedController {
 		// first blow up the parent circle and center it
 		if (this.parentInd !== undefined) {
 			this.tl.add("centerParent");
-			this.tl.to(angular.element("#page-container"), animLength, getPosDif(this.parentInd), "centerParent");
 			this.tl.set(this._$element.parent(), {'margin-left': this.parentMargin}, "centerParent");
+			this.tl.to(angular.element("#page-container"), animLength * 2, getPosDif(this.parentInd), "centerParent");
+
+			// this.tl.add("afterCenterParent");
+
+			this.tl.to(this.parentInd.find(".bg"), 0.01, {opacity: 1}, "afterCenterParent");
 		}
 
-		this.tl.add("afterCenterParent");
 		this.tl.from(this._$element.find(">.top"), animLength, {height: 0, ease: Linear.easeIn}, "afterCenterParent");
 	}
 

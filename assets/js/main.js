@@ -37,7 +37,7 @@ app.config(function ($uiRouterProvider, $locationProvider) {
 })
 
 /*@ngInject*/
-app.run(function($rootScope, $state, $transitions, $window, $q, rootTlService) {
+app.run(function($rootScope, $state, $transitions, $window, $q, rootTlService, $timeout) {
 
   let onStateChange = (transition) => {
     let toState = transition.to().name;
@@ -50,22 +50,11 @@ app.run(function($rootScope, $state, $transitions, $window, $q, rootTlService) {
 
   $transitions.onSuccess({}, onStateChange);
 
-  // $transitions.onStart({}, (transition) => {
-  //   let toState = transition.to().name;
-  //   let fromState = transition.from().name;
+  // $transitions.onEnter({}, function(transition, state) {
+  //   console.log('Transition #' + transition.$id + ' Entered ' + state.name);
+  //   // return new Promise(resolve => setTimeout(resolve, 1000))
 
-  //   if (toState.includes(fromState)) {
-  //     console.log("down");
-  //   } else if (fromState.includes(toState)) {
-  //     console.log("up");
-  //   }
   // })
-
-  $transitions.onEnter({}, function(transition, state) {
-    console.log('Transition #' + transition.$id + ' Entered ' + state.name);
-    // return new Promise(resolve => setTimeout(resolve, 1000))
-
-  })
 
   $transitions.onExit({}, function(transition, state) {
     let exitTl = rootTlService.getLastTl();
@@ -78,8 +67,10 @@ app.run(function($rootScope, $state, $transitions, $window, $q, rootTlService) {
       exitTl.eventCallback("onReverseComplete", deferred.resolve);
       exitTl.reverse();
     } else {
-      exitTl.call(deferred.resolve, null, null, "afterCenterParent");
+      // exitTl.call(deferred.resolve, null, null, "afterCenterParent");
       exitTl.tweenFromTo(exitTl.duration(), "afterCenterParent");
+      let numSecs = exitTl.duration() - exitTl.getLabelTime("afterCenterParent");
+      $timeout(deferred.resolve, numSecs * 1000);
     }
 
     return deferred.promise;
