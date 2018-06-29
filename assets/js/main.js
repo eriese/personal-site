@@ -57,21 +57,30 @@ app.run(function($rootScope, $state, $transitions, $window, $q, rootTlService, $
   // })
 
   $transitions.onExit({}, function(transition, state) {
+    // pop the last timeline from the stack
     let exitTl = rootTlService.getLastTl();
+    let centerTl = rootTlService.getLastTl();
+
+    // get a promise to resolve after all animation is done
     let deferred = $q.defer();
+    // default callback after reversing the timeline is resolving the promise
+    let callback = deferred.resolve
 
-    let ret = transition.retained();
-    let to = transition.to();
-
-    if (to == ret[ret.length -1]) {
-      exitTl.eventCallback("onReverseComplete", deferred.resolve);
-      exitTl.reverse();
-    } else {
-      // exitTl.call(deferred.resolve, null, null, "afterCenterParent");
-      exitTl.tweenFromTo(exitTl.duration(), "afterCenterParent");
-      let numSecs = exitTl.duration() - exitTl.getLabelTime("afterCenterParent");
-      $timeout(deferred.resolve, numSecs * 1000);
+    // if it's not entering a sibling state
+    if (transition.entering().length == 0) {
+      // the callback recenters the parent, then resolves
+      callback = () => {
+        centerTl.eventCallback("onReverseComplete", deferred.resolve);
+        centerTl.reverse();
+      }
     }
+    // if it's entering a sibling state. it needs a dummy timeline added INSTEAD of the real one
+    else {
+      transition.to().params.fromSib = true;
+    }
+
+    exitTl.eventCallback("onReverseComplete", callback);
+    exitTl.reverse();
 
     return deferred.promise;
   })
@@ -123,4 +132,8 @@ app.service("rootTlService", class RootTlService {
   getLastTl() {
     return this.currentTls.pop();
   }
+
+  // printTls() {
+  //   console.log(this.currentTls);
+  // }
 })

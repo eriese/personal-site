@@ -2,6 +2,7 @@ body {
   background-image: url("../images/Melamine-wood-002.png");
   font-family: Georgia;
   text-align: center;
+  overflow: hidden;
 }
 table {
 
