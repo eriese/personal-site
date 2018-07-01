@@ -37,6 +37,7 @@
     "angular": "^1.6.9",
     "angular-sanitize": "^1.6.9",
     "gsap": "^1.20.3",
-    "jquery-slim": "^3.0.0"
+    "jquery-slim": "^3.0.0",
+    "npm": "^6.1.0"
   }
 }
