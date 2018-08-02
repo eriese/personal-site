@@ -1,6 +1,6 @@
 import {TweenMax} from "gsap";
 
-const animLength = 0.3;
+const animLength = 0.3
 
 const defaultAnimatedBindings = {
 	pageInfo: "<",

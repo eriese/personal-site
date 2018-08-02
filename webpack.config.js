@@ -4,7 +4,7 @@ const webpack = require('webpack');
 module.exports = {
 	entry: ['babel-polyfill', './assets/js/main.js'],
 	output: {
-		path: path.resolve(__dirname, './build'),
+		path: path.resolve(__dirname, './docs'),
 		filename: 'bundle.js'
 	},
 	module: {
@@ -22,7 +22,7 @@ module.exports = {
 	},
 	devServer: {
 		port: 3000,
-		contentBase: "./build",
+		contentBase: "./docs",
 		inline: true
 	},
 	devtool: 'cheap-eval-source-map',
