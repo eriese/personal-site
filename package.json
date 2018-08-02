@@ -1,0 +1,43 @@
+{
+  "name": "eriese.github.io",
+  "version": "1.0.0",
+  "description": "eriese.github.io ================",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack",
+    "start": "webpack-dev-server"
+  },
+  "babel": {
+    "presets": [
+      "env"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/eriese/eriese.github.io.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/eriese/eriese.github.io/issues"
+  },
+  "homepage": "https://github.com/eriese/eriese.github.io#readme",
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-plugin-angularjs-annotate": "^0.8.2",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "webpack": "^3.11.0",
+    "webpack-dev-server": "^2.11.1"
+  },
+  "dependencies": {
+    "@uirouter/angularjs": "^1.0.15",
+    "angular": "^1.6.9",
+    "angular-sanitize": "^1.6.9",
+    "gsap": "^1.20.3",
+    "jquery-slim": "^3.0.0",
+    "npm": "^6.2.0"
+  }
+}

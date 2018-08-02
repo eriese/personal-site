@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Enoch Riese</title>
+  <link rel="stylesheet" href="./css/normalize.css">
+  <link rel="stylesheet" href="./css/style.css">
+  <link rel="stylesheet" href="./css/mobile.css">
+  <link rel="icon" href="./favicon.ico" type="image/x-icon">
+  <link rel="shortcut icon" type="image/ico" href="favicon.ico" />
+  <!-- <base href="/"> -->
+</head>
+<body data-ng-app="main">
+  <div id="up-arrow">
+    <a ng-if="upHref" ng-href="{{upHref}}"><img src="./images/arrow-up.png" alt="previous level"/></a>
+  </div>
+  <div id="page-container">
+    <div class="name enoch">
+      <a ui-sref="enoch">
+        <div class="tint magenta">
+          <h1>Enoch Riese</h1>
+        </div>
+      </a>
+    </div>
+    <div ui-view id="root-view"></div>
+  </div>
+
+  <div class="footer">
+    <span>more info</span>
+    <ul>
+      <li>enoch.riese@gmail.com</li>
+      <li><a href="enochriese_resume.pdf">resume</a></li>
+    </ul>
+  </div>
+</body>
+
+<script src="bundle.js"></script>
+
+<script type="text/ng-template" id="_chart.html">
+  <div class="top">
+      <div class="divider"></div>
+    </div>
+  <div class="chart-page">
+    <ul class="chart-container" ng-style="{width: $ctrl.perc($ctrl.containerWidth)}">
+      <li class="next-col" ng-style="{width: $ctrl.perc($ctrl.itemWidth)}" ng-repeat="next in $ctrl.nexts">
+        <chart-circle info="next" index="$index" on-click="$ctrl.setClicked(element, index)"></chart-circle>
+      </li>
+    </ul>
+  </div>
+  <div class="sub-view" ui-view parent-ind="$ctrl.clicked" parent-ctrl="$ctrl" parent-margin="$ctrl.subMargin"></div>
+</script>
+
+<script type="text/ng-template" id="_chart-circle.html">
+  <div class="grid-container" ng-class="[$ctrl.textAlign]">
+    <div class="inside-half"></div>
+    <div class="outside-half"></div>
+  </div>
+  <div class="info">
+
+      <a ng-href="{{$ctrl.getHref()}}" target="{{$ctrl.target}}" class="tint" ng-class="{magenta: $ctrl.chartCtrl.color == 1, green: $ctrl.chartCtrl.color == 0}" ng-click="$ctrl.click()">
+        <div class="bg" ng-class="[$ctrl.bgClass]"></div>
+        <p class="text">{{$ctrl.info.title}}</p>
+        <img ng-if="$ctrl.info.href" class="out-arrow" src="./images/arrow-up.png" alt="go to site"/>
+      </a>
+
+  </div>
+</script>
+
+<script type="text/ng-template" id="_info.html" class="html">
+  <div class="top">
+    <div class="divider"></div>
+  </div>
+  <div class="label">
+    <div class="wrapper">
+      <div ng-if="$ctrl.pageInfo.img || $ctrl.pageInfo.video" class="img">
+        <img ng-if="$ctrl.pageInfo.img" ng-src="{{$ctrl.pageInfo.img.src}}" alt="{{$ctrl.pageInfo.img.alt}}"/>
+        <video ng-if="$ctrl.pageInfo.video" ng-src="{{$ctrl.pageInfo.video.src}}" id="{{$ctrl.pageInfo.video.id}}" ng-click="$ctrl.vidClick($event)"></video>
+        {{$ctrl.pageInfo.img.desc}}
+        {{$ctrl.pageInfo.video.desc}}
+      </div>
+      <div ng-class="{description: $ctrl.pageInfo.img || $ctrl.pageInfo.video}" ng-bind-html="$ctrl.pageInfo.text">
+      </div>
+    </div>
+  </div>
+</script>
+</html>

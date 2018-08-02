@@ -1,0 +1,15 @@
+<div>
+  <table id="bottom" ng-style="{width: getWidth(currentPage.nexts.length)}">
+    <tr>
+      <td ng-repeat="i in currentPage.nexts" class="bottom" ng-if="!$last" ></td>
+    </tr>
+  </table>
+  <div class="info" data-ng-repeat="next in currentPage.nexts">
+    <a ng-click="setPage(next.href)" href="">
+      <div class="tint" ng-class="{magenta: currentPage.color == 1, green: currentPage.color == 0}">
+        <p class="text">{{next.title}}</p>
+        <img ng-if="next.isOut" class="out-arrow" src="assets/images/arrow-up.png" alt="up"/>
+      </div>
+    </a>
+  </div>
+</div>
