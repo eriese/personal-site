@@ -11,7 +11,7 @@ let app = angular.module("main", ["ngSanitize", "ui.router"]);
 
 /*@ngInject*/
 app.config(function ($uiRouterProvider, $locationProvider) {
-  $uiRouterProvider.urlService.rules.otherwise({state: "mainState"});
+  $uiRouterProvider.urlService.rules.otherwise({state: "enoch"});
   // $locationProvider.html5Mode(true);
   let makeView = (page)  => `${page.type}Component`
 

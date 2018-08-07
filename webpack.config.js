@@ -25,7 +25,7 @@ module.exports = {
 		contentBase: "./docs",
 		inline: true
 	},
-	devtool: 'cheap-eval-source-map',
+	devtool: 'eval-source-map',
 	plugins: [
 		new webpack.ProvidePlugin({
 			"window.jQuery": "jquery-slim"
