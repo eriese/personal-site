@@ -2,7 +2,7 @@ body {
   background-image: url("../images/Melamine-wood-002.png");
   font-family: Georgia;
   text-align: center;
-  overflow: hidden;
+  overflow-x: hidden;
 }
 table {
 
@@ -103,9 +103,11 @@ a {
 .description {
   display: inline-block;
   width: 500px;
-  font-size: 30px;
-  line-height: 35px;
+  font-size: 20px;
+  line-height: 1.5;
   margin: 0px auto;
+  padding-left: 15px;
+  box-sizing: border-box;
 }
 
 /**********************
@@ -256,7 +258,7 @@ chart-circle {
   background-color: rgba(105,12,122,1);
 }
 .label strong {
-  font-size: 50px;
+  font-size: 34px;
   /*color: rgba(103,59,255,1);*/
   color: rgba(105,12,122,1);
 }
@@ -266,8 +268,8 @@ chart-circle {
   width: 75%;
   margin: 25px auto;
   min-width: 300px;
-  font-size: 40px;
-  line-height: 75px;
+  font-size: 28px;
+  line-height: 1.5;
   padding: 20px;
   border-radius: 10px;
   margin-bottom: 80px;
@@ -317,8 +319,8 @@ chart-circle {
 .img {
   display: inline-block;
   width: 400px;
-  font-size: 20px;
-  line-height: 20px;
+  font-size: 14px;
+  line-height: 1.5;
   text-align: center;
   margin: 0px auto;
 }
@@ -331,9 +333,14 @@ video {
 
 #up-arrow {
   position: absolute;
-  top: 50px;
-  left: 50px;
+  top: 15px;
+  left: 15px;
   z-index: 1;
+  width: 50px;
+}
+
+#up-arrow img {
+  width: 100%;
 }
 
 .hidden {
