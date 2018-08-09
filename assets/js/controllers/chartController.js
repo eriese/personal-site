@@ -1,9 +1,17 @@
 import AnimatedController, {animLength, defaultAnimatedBindings} from "./AnimatedController";
 
-let animIn = (ctrl, tl) => {
+let animIn = (ctrl, isMobileWidth) => {
+	let tl = ctrl.tl;
+
 	tl.eventCallback("onComplete", ()=> {ctrl.setup = true; ctrl._$scope.$apply();})
 
 	let nextCols = ctrl._$element.find(">.chart-page>.chart-container>.next-col>chart-circle");
+
+	// for mobile, it's really foreshortened
+	if (isMobileWidth) {
+		tl.staggerFrom(nextCols, animLength, {opacity: 0}, animLength / 2, "beginning");
+		return tl;
+	}
 
 	// first, hide all the borders
 	tl.set(nextCols.find(">.grid-container>div"), {'border-width': 0}, "beginning")
@@ -62,8 +70,8 @@ const chartComponent = {
 	templateUrl: "_chart.html",
 	controller: class ChartController extends AnimatedController{
 		/*@ngInject*/
-		constructor($scope, $state, $element, $timeout, rootTlService) {
-			super($element, $timeout, rootTlService);
+		constructor($scope, $state, $element, $timeout, rootTlService, isMobileWidth) {
+			super($element, $timeout, rootTlService, isMobileWidth);
 			this._$state = $state;
 			this._$scope = $scope;
 		}
@@ -85,8 +93,8 @@ const chartComponent = {
 			this.isEven = numNexts % 2 === 0;
 		}
 
-		doAnim() {
-			animIn(this, this.tl);
+		doAnim(isMobileWidth) {
+			animIn(this, isMobileWidth);
 		}
 
 		perc(num) {

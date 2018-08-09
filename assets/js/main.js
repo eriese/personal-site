@@ -9,6 +9,8 @@ import chartCircleComponent from "./controllers/chartCircleComponent";
 
 let app = angular.module("main", ["ngSanitize", "ui.router"]);
 
+app.value("isMobileWidth", function() {return angular.element("body").width() < 740});
+
 /*@ngInject*/
 app.config(function ($uiRouterProvider, $locationProvider) {
   $uiRouterProvider.urlService.rules.otherwise({state: "enoch"});
@@ -59,6 +61,8 @@ app.run(function($rootScope, $state, $transitions, $window, $q, rootTlService, $
   $transitions.onExit({}, function(transition, state) {
     // pop the last timeline from the stack
     let exitTl = rootTlService.getLastTl();
+    if (!exitTl) {return;}
+    // pop the timeline before that, which is what centered the parent
     let centerTl = rootTlService.getLastTl();
 
     // get a promise to resolve after all animation is done
@@ -67,7 +71,7 @@ app.run(function($rootScope, $state, $transitions, $window, $q, rootTlService, $
     let callback = deferred.resolve
 
     // if it's not entering a sibling state
-    if (transition.entering().length == 0) {
+    if (transition.entering().length == 0 && centerTl) {
       // the callback recenters the parent, then resolves
       callback = () => {
         centerTl.eventCallback("onReverseComplete", deferred.resolve);

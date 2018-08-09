@@ -1,5 +1,5 @@
-@media (max-width: 600px) {
-  #top, .grid-container {
+@media (max-width: 740px) {
+  #top, .grid-container, chart-component > .top, info-component > .top, li.inactive {
     display: none;
   }
   .chart-container {
@@ -9,16 +9,48 @@
   .next-col {
     width: 100% !important;
   }
-  .info {
-    width: 70%;
-    height: 50px;
-    margin-top: 250px;
-  }
-  .info ~ .info{
+  .next-col:not(.active) div.info {
+    max-width: unset;
     margin-top: 15px;
+    padding: 0px;
+    width: 100%;
+  }
+
+  .next-col:not(.active) div.info a.tint {
+    height: auto;
+    padding: 20px 10px;
+    border-radius: 5px;
+    box-sizing: border-box;
+  }
+
+  .next-col div.info, .next-col div.info a.tint {
+    transition: 0.3s linear all;
+  }
+
+  .sub-view {
+    margin-left: 0px !important;
+  }
+
+  li.active div.info {
+    width: 70%;
+  }
+
+  .info .green:hover {
+    background-color: rgba(0,240,10,0.2);
+  }
+
+  .info .magenta:hover {
+    background-color: rgba(105,12,122,0.5);
+  }
+  /*.info ~ .info{
+    margin-top: 15px;
+  }*/
+  .wrapper {
+    display: block;
   }
   .img {
     width: 95%;
+    margin-bottom: 10px;
   }
   .description {
     width: 95%;
@@ -27,16 +59,13 @@
     top: 15px;
     left: 15px;
   }
-  #up-arrow img {
-    width: 50px;
-  }
-  .footer li {
-    display: block;
-  }
+
   .label {
-    margin-top: 250px;
     font-size: 25px;
     line-height: 40px;
+    min-width: unset;
+    background-color: rgba(0,0,0,0.6);
+    margin-bottom: 25px;
   }
   .label strong {
     font-size: 28px;
@@ -54,5 +83,10 @@
   }
   .description {
     width: 95%;
+  }
+}
+@media (min-width:740px) and (max-width:860px){
+  .next-col div.info a.tint p.text {
+    font-size: 14px;
   }
 }

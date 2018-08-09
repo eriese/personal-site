@@ -49,7 +49,10 @@ const pages = [
       "sref": "enoch.puppeteer.shows",
     },
     {
-      "title": "Construction/ mechanical problemsolving",
+      "title": "Mechanical problem-solving",
+    },
+    {
+      "title": "Construction"
     }
     ]
   }

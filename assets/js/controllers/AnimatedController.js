@@ -12,26 +12,31 @@ const defaultAnimatedBindings = {
 
 export {animLength, defaultAnimatedBindings};
 
-let getPosDif = (el) => {
-	if (!el) {
-		return {top: 0, left: 0};
+let getPosDifs = (el) => {
+	let getPosDifTop = () => {
+		if (!el) {return 0;}
+
+		let elOff = el.find(".info").position();
+		return -elOff.top;
 	}
 
-	let elOff = el.find(".info").position();
-	let elWidth = el.width();
-	let contWidth = angular.element("#page-container").width();
+	let getPosDifLeft = () => {
+		if (!el) {return 0;}
+		let elOff = el.find(".info").position();
+		let elWidth = el.width();
+		let contWidth = angular.element("#page-container").width();
+		return (contWidth/2 - (elOff.left + elWidth/2)) * 100 / contWidth + "%";
+	}
 
-	let top = -elOff.top;
-	let left = (contWidth/2 - (elOff.left + elWidth/2)) * 100 / contWidth + "%";
-
-	return {top, left};
+	return {top: getPosDifTop, left: getPosDifLeft}
 }
 
 export default class AnimatedController {
-	constructor($element, $timeout, rootTlService) {
+	constructor($element, $timeout, rootTlService, isMobileWidth) {
 		this._$element = $element;
 		this._$timeout = $timeout;
 		this._rootTlService = rootTlService;
+		this._isMobileWidth = isMobileWidth;
 	}
 
 	$onInit() {
@@ -43,7 +48,7 @@ export default class AnimatedController {
 			this._$element.show();
 			this.generateTl();
 			this.centerParent();
-			this.doAnim();
+			this.doAnim(this._isMobileWidth());
 
 			this._rootTlService.addToTl(this.tl);
 		})
@@ -106,11 +111,14 @@ export default class AnimatedController {
 			}
 
 			// add tweens to the timeline
-			let posDif = getPosDif(this.parentInd);
+			let posDif = getPosDifs(this.parentInd);
 			this.makeParentTl(pTl, posDif, false, dTl);
 
 			// properly position the view
 			this.tl.set(this._$element.parent(), {'margin-left': this.parentMargin}, "beginning");
+			// add an active class to the parent
+			this.tl.set(this.parentInd.parent(), {className: "+=active"}, "beginning");
+			this.tl.set(this.parentInd.parent().siblings(), {className: "+=inactive"}, "beginning");
 			// add a background to the parent
 			this.tl.to(this.parentInd.find(".bg"), 0.01, {opacity: 1}, "afterCenterParent");
 			this.tl.to(this.parentInd.find(".text"), 0.01, {color: "black", "font-weight": "bold"})
@@ -119,5 +127,5 @@ export default class AnimatedController {
 		this.tl.from(this._$element.find(">.top"), animLength, {height: 0, ease: Linear.easeIn}, "afterCenterParent");
 	}
 
-	doAnim() {}
+	doAnim(isMobile) {}
 }

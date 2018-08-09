@@ -6,8 +6,8 @@ const infoComponent = {
 
 	controller: class InfoController extends AnimatedController {
 		/*@ngInject*/
-		constructor($element, $timeout, rootTlService) {
-			super($element, $timeout, rootTlService)
+		constructor($element, $timeout, rootTlService, isMobileWidth) {
+			super($element, $timeout, rootTlService, isMobileWidth)
 		}
 
 		vidClick($event) {

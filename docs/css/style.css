@@ -214,7 +214,8 @@ chart-circle {
 .next-col div.info a.tint p.text {
   text-align: center;
   width: 100%;
-  padding: 10px;
+  word-break: break-word;
+  font-size: 16px;
 }
 
 .out-arrow {
@@ -332,7 +333,7 @@ video {
 }
 
 #up-arrow {
-  position: absolute;
+  position: fixed;
   top: 15px;
   left: 15px;
   z-index: 1;
