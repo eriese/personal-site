@@ -45,23 +45,17 @@ app.run(function($rootScope, $state, $transitions, $window, $q, rootTlService, $
     let toState = transition.to().name;
     let toParams = transition.params();
     $rootScope.upHref = $state.href("^");
-    // $rootScope.title = toParams.title;
-    // $rootScope.category = toState.split(".")[1] || "enoch";
-    // $rootScope.color = toParams.color;
   }
 
   $transitions.onSuccess({}, onStateChange);
 
-  // $transitions.onEnter({}, function(transition, state) {
-  //   console.log('Transition #' + transition.$id + ' Entered ' + state.name);
-  //   // return new Promise(resolve => setTimeout(resolve, 1000))
-
-  // })
-
   $transitions.onExit({}, function(transition, state) {
+    rootTlService.cancelAnimating();
+
     // pop the last timeline from the stack
     let exitTl = rootTlService.getLastTl();
     if (!exitTl) {return;}
+
     // pop the timeline before that, which is what centered the parent
     let centerTl = rootTlService.getLastTl();
 
@@ -116,6 +110,7 @@ app.component("chartCircle", chartCircleComponent);
 app.service("rootTlService", class RootTlService {
   constructor() {
     this.currentTls = [];
+    this.animating = [];
   }
 
   addToTl(tl) {
@@ -131,13 +126,32 @@ app.service("rootTlService", class RootTlService {
     }
 
     this.currentTls.push(tl);
+    // this.printTls("tl added. current list:")
+    this.addAnimating(tl);
   }
 
   getLastTl() {
-    return this.currentTls.pop();
+    let last = this.currentTls.pop();
+    // this.printTls("tl removed. current list:");
+    return last;
   }
 
-  // printTls() {
-  //   console.log(this.currentTls);
-  // }
+  addAnimating(tl) {
+    if (tl.isActive()) {
+      this.animating.push(tl);
+    }
+  }
+
+  cancelAnimating() {
+    for (let tl of this.animating) {
+      let prog = tl.reversed() ? 0 : 1;
+      tl.progress(prog);
+    }
+
+    this.animating = [];
+  }
+
+  printTls(msg) {
+    console.log(msg, this.currentTls);
+  }
 })

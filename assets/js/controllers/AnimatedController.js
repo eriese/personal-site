@@ -70,7 +70,24 @@ export default class AnimatedController {
 		// if there is no timeline, don't do anything
 		if (!parentTl) {return;}
 
-		// the timeline position, element the tween is acting up, and the tween length
+		// add a dummy beginning marker
+		parentTl.add("dummyBeginning")
+		// add the real beginning slightly later so that nothing will be missed on reverse
+		parentTl.add("beginning", "+=0.001");
+
+		// get the parent
+		let parent = this.parentInd.parent();
+		// these tweens should be essentially skipped if we're not mobile
+		let classAnimLength = this._isMobileWidth() ? animLength * 2 : 0;
+
+		// add active class to the selected info
+		parentTl.set(parent.find("div.info"), {className: "+=active"}, "beginning");
+		parentTl.to(parent.find("div.info a.tint"), classAnimLength, {className: "+=active"}, "beginning");
+
+		// add inactive class to the siblings
+		parentTl.to(parent.siblings(), classAnimLength, {className: "+=inactive"}, "second");
+
+		// the timeline position, element the tween is acting upon, and the tween length
 		let pos ="centerParent";
 		let tlEl = angular.element("#page-container");
 		let len = animLength * 2;
@@ -80,7 +97,7 @@ export default class AnimatedController {
 
 		// if this is the dummy
 		if (isDummy) {
-			let grandParent = getPosDif(this.parentCtrl.parentInd);
+			let grandParent = getPosDifs(this.parentCtrl.parentInd);
 			// tween from the grandparent centered to the parent centered
 			parentTl.fromTo(tlEl, len, grandParent, posDif, pos);
 			// skip to the end
@@ -116,9 +133,7 @@ export default class AnimatedController {
 
 			// properly position the view
 			this.tl.set(this._$element.parent(), {'margin-left': this.parentMargin}, "beginning");
-			// add an active class to the parent
-			this.tl.set(this.parentInd.parent(), {className: "+=active"}, "beginning");
-			this.tl.set(this.parentInd.parent().siblings(), {className: "+=inactive"}, "beginning");
+
 			// add a background to the parent
 			this.tl.to(this.parentInd.find(".bg"), 0.01, {opacity: 1}, "afterCenterParent");
 			this.tl.to(this.parentInd.find(".text"), 0.01, {color: "black", "font-weight": "bold"})

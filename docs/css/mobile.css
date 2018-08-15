@@ -1,7 +1,10 @@
 @media (max-width: 740px) {
   #top, .grid-container, chart-component > .top, info-component > .top, li.inactive {
-    display: none;
+    opacity: 0;
+    overflow: hidden;
+    height: 0px;
   }
+
   .chart-container {
     width: 90% !important;
   }
@@ -9,31 +12,33 @@
   .next-col {
     width: 100% !important;
   }
-  .next-col:not(.active) div.info {
+  .next-col div.info:not(.active) {
     max-width: unset;
     margin-top: 15px;
     padding: 0px;
     width: 100%;
   }
 
-  .next-col:not(.active) div.info a.tint {
+  .next-col div.info a.tint:not(.active) {
     height: auto;
     padding: 20px 10px;
     border-radius: 5px;
     box-sizing: border-box;
   }
 
+  li div.info.active {
+    width: 70%;
+  }
+
   .next-col div.info, .next-col div.info a.tint {
-    transition: 0.3s linear all;
+    /*transition: 1s linear all;*/
   }
 
   .sub-view {
     margin-left: 0px !important;
   }
 
-  li.active div.info {
-    width: 70%;
-  }
+
 
   .info .green:hover {
     background-color: rgba(0,240,10,0.2);
@@ -42,9 +47,7 @@
   .info .magenta:hover {
     background-color: rgba(105,12,122,0.5);
   }
-  /*.info ~ .info{
-    margin-top: 15px;
-  }*/
+
   .wrapper {
     display: block;
   }
