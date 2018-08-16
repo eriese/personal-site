@@ -103,7 +103,7 @@ const pages = [
     "title": "Bottom of the Mouffe",
     "color": 1,
     "video": {
-      "src": "./video/mouffe.webmsd.webm",
+      "src": "https://img-cache.oppcdn.com/fixed/23896/assets/j68GiywKCuMzZ8wn.mp4",
       "id": "mouffe",
       "desc": "Click to watch"
     },
