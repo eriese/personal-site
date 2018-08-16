@@ -42,9 +42,10 @@ let getParentProps = (ctrl) => {
 	let index = ctrl.parentInd.parent().prevAll().length;
 
 	// find the offset
-	let numShift = ctrl.parentCtrl.itemWidth * (index - ctrl.parentCtrl.middleInd);
-	if (ctrl.parentCtrl.isEven) numShift *= 0.5;
-	ctrl.parentMargin = `${numShift * ctrl.parentCtrl.containerWidth  / 100}%`;
+	let pCtrl = ctrl.parentCtrl;
+	let numShift = pCtrl.itemWidth * (index - pCtrl.middleInd);
+	if (pCtrl.isEven) numShift *= 0.5;
+	ctrl.parentMargin = pCtrl.perc(numShift * pCtrl.containerWidth  / 100);
 }
 
 export default class AnimatedController {

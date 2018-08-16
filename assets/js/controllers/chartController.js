@@ -96,6 +96,10 @@ const chartComponent = {
 			animIn(this, isMobileWidth);
 		}
 
+		perc(num) {
+			return `${num}%`;
+		}
+
 		viewClass(next) {
 			return next.sref ? next.sref.split(".").join("") : "";
 		}
