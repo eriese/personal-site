@@ -9,7 +9,7 @@ import chartCircleComponent from "./controllers/chartCircleComponent";
 
 let app = angular.module("main", ["ngSanitize", "ui.router"]);
 
-app.value("isMobileWidth", function() {return angular.element("body").width() < 740});
+app.value("isMobileWidth", function() {return angular.element(window).width() < 740});
 
 /*@ngInject*/
 app.config(function ($uiRouterProvider, $locationProvider) {
@@ -127,7 +127,7 @@ app.service("rootTlService", class RootTlService {
     }
 
     this.currentTls.push(tl);
-    this.printTls("tl added. current list:")
+    // this.printTls("tl added. current list:")
     this.addAnimating(tl);
   }
 

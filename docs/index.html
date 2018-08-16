@@ -63,9 +63,15 @@
   </div>
   <div class="label">
     <div class="wrapper">
-      <div ng-if="$ctrl.pageInfo.img || $ctrl.pageInfo.video" class="img">
-        <img ng-if="$ctrl.pageInfo.img" ng-src="{{$ctrl.pageInfo.img.src}}" alt="{{$ctrl.pageInfo.img.alt}}"/>
-        <video ng-if="$ctrl.pageInfo.video" ng-src="{{$ctrl.pageInfo.video.src}}" id="{{$ctrl.pageInfo.video.id}}" ng-click="$ctrl.vidClick($event)"></video>
+      <div ng-if="$ctrl.pageInfo.img || $ctrl.pageInfo.video" class="img" >
+        <div class="img-container" ng-class="{playing: $ctrl.playing}">
+          <img ng-if="$ctrl.pageInfo.img"
+          ng-src="{{$ctrl.pageInfo.img.src}}"
+          alt="{{$ctrl.pageInfo.img.alt}}"
+          ng-click="$ctrl.vidClick($event)"
+          ng-style="$ctrl.containerStyle"/>
+          <video ng-if="$ctrl.pageInfo.video" ng-src="{{$ctrl.pageInfo.video.src}}" id="{{$ctrl.pageInfo.video.id}}" ng-click="$ctrl.vidClick($event)"></video>
+        </div>
         {{$ctrl.pageInfo.img.desc}}
         {{$ctrl.pageInfo.video.desc}}
       </div>

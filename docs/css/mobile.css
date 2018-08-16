@@ -9,6 +9,10 @@
     width: 90% !important;
   }
 
+  .chart-page {
+    margin-bottom: 15px;
+  }
+
   .next-col {
     width: 100% !important;
   }
