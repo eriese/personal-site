@@ -40,7 +40,7 @@
       </li>
     </ul>
   </div>
-  <div class="sub-view" ui-view parent-ind="$ctrl.clicked" parent-ctrl="$ctrl" parent-margin="$ctrl.subMargin"></div>
+  <div class="sub-view" ui-view parent-ctrl="$ctrl"></div>
 </script>
 
 <script type="text/ng-template" id="_chart-circle.html">
@@ -49,13 +49,11 @@
     <div class="outside-half"></div>
   </div>
   <div class="info">
-
-      <a ng-href="{{$ctrl.getHref()}}" target="{{$ctrl.target}}" class="tint" ng-class="{magenta: $ctrl.chartCtrl.color == 1, green: $ctrl.chartCtrl.color == 0}" ng-click="$ctrl.click()">
+      <a ng-href="{{$ctrl.getHref()}}" target="{{$ctrl.target}}" class="tint" ng-class="{magenta: $ctrl.chartCtrl.color == 1, green: $ctrl.chartCtrl.color == 0}">
         <div class="bg" ng-class="[$ctrl.bgClass]"></div>
         <p class="text">{{$ctrl.info.title}}</p>
         <img ng-if="$ctrl.info.href" class="out-arrow" src="./images/arrow-up.png" alt="go to site"/>
       </a>
-
   </div>
 </script>
 

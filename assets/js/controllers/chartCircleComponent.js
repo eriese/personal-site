@@ -1,5 +1,3 @@
-// import {TimelineMax} from "gsap";
-
 let getTextAlign = (ctrl) => {
 	let cls = "align-";
 	if (ctrl.index < ctrl.chartCtrl.middleInd) {cls+="right";}
@@ -39,84 +37,9 @@ const chartCircleComponent = {
 			this.target = sref ? "" : "_blank";
 			this.textAlign = getTextAlign(this);
 			this.bgClass = sref ? sref.split(".")[1] : "";
-
-			if (sref && this._$state.includes(sref)) {
-				this.onClick({element: this._$element, index: this.index});
-			}
-		}
-
-		click() {
-			this.onClick({element: this._$element, index: this.index});
 		}
 	}
 
 };
 
 export default chartCircleComponent;
-
-/*
-const animLength = 0.4;
-
-
-let animIn = (ctrl) => {
-	ctrl._$element.show();
-	let $el = ctrl.$element;
-
-	let isMiddle = ctrl._$scope.$index == ctrl.chartCtrl.middleInd && !ctrl.chartCtrl.isEven;
-
-	let absInd = Math.abs(ctrl.$scope.$index - ctrl.chartCtrl.middleInd);
-
-	// let nextCols = ctrl._$element.find(".next-col");
-
-	// first, hide all the borders
-	let tl = new TimelineMax({
-		delay: absInd * animLength;
-		onComplete: ()=>{ctrl.setup = true; ctrl._$scope.$apply()}
-	});
-	tl.set($el.find(".grid-container>div"), {'border-width': "0px 0px 0px 0px"})
-
-	// set a marker for the beginning of the timeline
-	let curMarker = "first";
-
-	// // start in the middle of the array of next objects
-	// for (let i = ctrl.middleInd; i < ctrl.nexts.length; i++) {
-	// 	// get the column at this index
-	// 	let curCols = angular.element(nextCols.get(i));
-		// it's the middle if they're the same index
-
-
-		// if it's not the middle, add the column at the symmetrical index to the DOM objects being animated
-		// if (!isMiddle) {
-		// 	// get the symmetrical index on the other side of the center of the array
-		// 	let symmInd = ctrl.lastInd - i;
-		// 	curCols = curCols.add(nextCols.get(symmInd));
-		// }
-
-		// simultaneously reset border widths for these objects
-		tl.set($el.find(".grid-container>div"), {clearProps: "border-width"}, curMarker);
-		// and scroll out the width
-		tl.from($el.find(".grid-container"), animLength, {width: "0%", ease: Linear.easeIn}, curMarker);
-
-		// if it's not the middle one
-		if (!isMiddle) {
-			// we're going to be manipulating the outside half
-			let outside = $el.find(".outside-half");
-			// also simultaneously set the outside half of the grid lines to have no width so that only the inside half scrolls out
-			tl.set(outside, {width: "0%"}, curMarker);
-
-			// make a new marker for after all that simultaneous action
-			curMarker = `pos${i}`;
-			// restore the width of the outside half at the new marker, to happen at the same time as the height
-			tl.to(outside, animLength, {width: "50%", ease: Linear.easeIn}, curMarker);
-		}
-
-		// scroll out the height at whatever marker is current
-		tl.from($el.find(".grid-container"), animLength, {height: 2}, curMarker);
-
-		// make a new marker to be used by the last actions and the first actions of the next set
-		curMarker = `pos${i}b`
-		// fade in the info simultaenously with the beginning of the next set
-		tl.from($el.find(".info"), animLength, {opacity: 0}, curMarker);
-	}
-}
-*/

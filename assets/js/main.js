@@ -19,7 +19,8 @@ app.config(function ($uiRouterProvider, $locationProvider) {
 
   let makeResolves = (page) => {
     return {
-      pageInfo: () => page.scope
+      pageInfo: () => page.scope,
+      pageState: () => page.state
     };
   }
 
@@ -126,7 +127,7 @@ app.service("rootTlService", class RootTlService {
     }
 
     this.currentTls.push(tl);
-    // this.printTls("tl added. current list:")
+    this.printTls("tl added. current list:")
     this.addAnimating(tl);
   }
 

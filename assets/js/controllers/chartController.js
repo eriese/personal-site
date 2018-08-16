@@ -71,8 +71,7 @@ const chartComponent = {
 	controller: class ChartController extends AnimatedController{
 		/*@ngInject*/
 		constructor($scope, $state, $element, $timeout, rootTlService, isMobileWidth) {
-			super($element, $timeout, rootTlService, isMobileWidth);
-			this._$state = $state;
+			super($element, $timeout, rootTlService, isMobileWidth, $state);
 			this._$scope = $scope;
 		}
 
@@ -97,19 +96,8 @@ const chartComponent = {
 			animIn(this, isMobileWidth);
 		}
 
-		perc(num) {
-			return `${num}%`;
-		}
-
 		viewClass(next) {
 			return next.sref ? next.sref.split(".").join("") : "";
-		}
-
-		setClicked(element, index) {
-			this.clicked = element;
-			let numShift = this.itemWidth * (index - this.middleInd);
-			if (this.isEven) numShift *= 0.5;
-			this.subMargin = this.perc(numShift * this.containerWidth  / 100);
 		}
 	}
 }

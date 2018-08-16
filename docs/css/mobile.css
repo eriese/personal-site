@@ -30,15 +30,9 @@
     width: 70%;
   }
 
-  .next-col div.info, .next-col div.info a.tint {
-    /*transition: 1s linear all;*/
-  }
-
   .sub-view {
     margin-left: 0px !important;
   }
-
-
 
   .info .green:hover {
     background-color: rgba(0,240,10,0.2);

@@ -6,8 +6,8 @@ const infoComponent = {
 
 	controller: class InfoController extends AnimatedController {
 		/*@ngInject*/
-		constructor($element, $timeout, rootTlService, isMobileWidth) {
-			super($element, $timeout, rootTlService, isMobileWidth)
+		constructor($element, $timeout, rootTlService, isMobileWidth, $state) {
+			super($element, $timeout, rootTlService, isMobileWidth, $state)
 		}
 
 		vidClick($event) {
@@ -24,7 +24,7 @@ const infoComponent = {
 			}
 		}
 
-		doAnim() {
+		doAnim(isMobileWidth) {
 			this.tl.from(this._$element.find(".label"), 0.5, {height: 0, 'padding-top': 0, 'padding-bottom': 0, ease: Power4.easeIn});
 			this.tl.set(this._$element.find(".label"), {clearProps: "all"});
 		}

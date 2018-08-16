@@ -4,9 +4,8 @@ const animLength = 0.3
 
 const defaultAnimatedBindings = {
 	pageInfo: "<",
-	parentInd: "<",
+	pageState: "<",
 	parentCtrl: "<",
-	parentMargin: "<",
 	$transition$: "<"
 }
 
@@ -31,12 +30,30 @@ let getPosDifs = (el) => {
 	return {top: getPosDifTop, left: getPosDifLeft}
 }
 
+let getParentProps = (ctrl) => {
+	// if it doesn't have a parent, skip this part
+	if (ctrl.parentCtrl == undefined) {return;}
+
+	// find the parent element, the node that linked to this page
+	let useUrl = ctrl._$state.href(ctrl.pageState);
+	ctrl.parentInd = angular.element(`chart-component a[href='${useUrl}']`).parents("chart-circle");
+
+	// get the index of the parent element
+	let index = ctrl.parentInd.parent().prevAll().length;
+
+	// find the offset
+	let numShift = ctrl.parentCtrl.itemWidth * (index - ctrl.parentCtrl.middleInd);
+	if (ctrl.parentCtrl.isEven) numShift *= 0.5;
+	ctrl.parentMargin = `${numShift * ctrl.parentCtrl.containerWidth  / 100}%`;
+}
+
 export default class AnimatedController {
-	constructor($element, $timeout, rootTlService, isMobileWidth) {
+	constructor($element, $timeout, rootTlService, isMobileWidth, $state) {
 		this._$element = $element;
 		this._$timeout = $timeout;
 		this._rootTlService = rootTlService;
 		this._isMobileWidth = isMobileWidth;
+		this._$state = $state;
 	}
 
 	$onInit() {
@@ -45,6 +62,8 @@ export default class AnimatedController {
 
 	$postLink() {
 		this._$timeout(() => {
+			getParentProps(this);
+
 			this._$element.show();
 			this.generateTl();
 			this.centerParent();
@@ -78,7 +97,7 @@ export default class AnimatedController {
 		// get the parent
 		let parent = this.parentInd.parent();
 		// these tweens should be essentially skipped if we're not mobile
-		let classAnimLength = this._isMobileWidth() ? animLength * 2 : 0;
+		let classAnimLength = this._isMobileWidth() ? animLength * 1.5 : 0;
 
 		// add active class to the selected info
 		parentTl.set(parent.find("div.info"), {className: "+=active"}, "beginning");
@@ -137,6 +156,8 @@ export default class AnimatedController {
 			// add a background to the parent
 			this.tl.to(this.parentInd.find(".bg"), 0.01, {opacity: 1}, "afterCenterParent");
 			this.tl.to(this.parentInd.find(".text"), 0.01, {color: "black", "font-weight": "bold"})
+		} else {
+			console.log("No parentInd. Skipping centering parent");
 		}
 
 		this.tl.from(this._$element.find(">.top"), animLength, {height: 0, ease: Linear.easeIn}, "afterCenterParent");
