@@ -1,4 +1,4 @@
-import AnimatedController, {defaultAnimatedBindings} from "./AnimatedController";
+import AnimatedController, {defaultAnimatedBindings} from "../controllers/animatedController";
 
 const infoComponent = {
 	bindings: defaultAnimatedBindings,

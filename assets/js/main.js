@@ -3,9 +3,9 @@ import uiRouter from "@uirouter/angularjs";
 import ngSanitize from "angular-sanitize";
 
 import pages from "./pages";
-import chartComponent from "./controllers/chartController";
-import infoComponent from "./controllers/InfoController";
-import chartCircleComponent from "./controllers/chartCircleComponent";
+import chartComponent from "./components/chartComponent";
+import infoComponent from "./components/infoComponent";
+import chartCircleComponent from "./components/chartCircleComponent";
 
 let app = angular.module("main", ["ngSanitize", "ui.router"]);
 

@@ -1,4 +1,4 @@
-import AnimatedController, {animLength, defaultAnimatedBindings} from "./AnimatedController";
+import AnimatedController, {animLength, defaultAnimatedBindings} from "../controllers/animatedController";
 
 let animIn = (ctrl, isMobileWidth) => {
 	let tl = ctrl.tl;
