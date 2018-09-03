@@ -1,10 +1,10 @@
 import AnimatedController, {animLength, defaultAnimatedBindings} from "../controllers/animatedController";
 
+/** animate the chart to show */
 let animIn = (ctrl, isMobileWidth) => {
 	let tl = ctrl.tl;
 
-	tl.eventCallback("onComplete", ()=> {ctrl.setup = true; ctrl._$scope.$apply();})
-
+	// get the chart circles in this element
 	let nextCols = ctrl._$element.find(">.chart-page>.chart-container>.next-col>chart-circle");
 
 	// for mobile, it's really foreshortened
@@ -34,7 +34,7 @@ let animIn = (ctrl, isMobileWidth) => {
 			curCols = curCols.add(nextCols.get(symmInd));
 		}
 
-		// // simultaneously reset border widths for these objects
+		// simultaneously reset border widths for these objects
 		tl.set(curCols.find(">.grid-container>div"), {"border-width": 3}, curMarker);
 		// and scroll out the width
 		tl.from(curCols.find(">.grid-container"), animLength, {width: "0%", ease: Linear.easeIn}, curMarker);
@@ -64,7 +64,7 @@ let animIn = (ctrl, isMobileWidth) => {
 	return tl;
 }
 
-
+/** component for a chart level. parent to chartCircleComponent*/
 const chartComponent = {
 	bindings: defaultAnimatedBindings,
 	templateUrl: "_chart.html",
@@ -78,15 +78,17 @@ const chartComponent = {
 		$onInit() {
 			super.$onInit();
 
-			this.setup = true;
-
+			// get data from the page info
 			this.nexts = this.pageInfo.nexts;
 			this.color = this.pageInfo.color;
 
+			// get the width percentage of each item
 			let numNexts = this.nexts.length;
 			this.itemWidth = 100/numNexts;
+			// get the container width, assuming that each item wants 25% of the screen space
 			this.containerWidth = Math.min(25*numNexts, 100);
 
+			// store some info about how many next items there are
 			this.middleInd = Math.floor(numNexts / 2);
 			this.lastInd = numNexts - 1;
 			this.isEven = numNexts % 2 === 0;
@@ -96,13 +98,11 @@ const chartComponent = {
 			animIn(this, isMobileWidth);
 		}
 
+		/** make a number into a percentage string */
 		perc(num) {
 			return `${num}%`;
 		}
 
-		viewClass(next) {
-			return next.sref ? next.sref.split(".").join("") : "";
-		}
 	}
 }
 

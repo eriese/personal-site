@@ -1,7 +1,9 @@
 import {TweenMax} from "gsap";
 
+/** the default animation length */
 const animLength = 0.3
 
+/** default bindings for animated controllers */
 const defaultAnimatedBindings = {
 	pageInfo: "<",
 	pageState: "<",
@@ -11,25 +13,40 @@ const defaultAnimatedBindings = {
 
 export {animLength, defaultAnimatedBindings};
 
+/** get functions to find the positions to animate to based on the element position */
 let getPosDifs = (el) => {
+	/** get the top position */
 	let getPosDifTop = () => {
+		// if there's no element, return 0
 		if (!el) {return 0;}
 
+		// get the position of the info element
 		let elOff = el.find(".info").position();
 		return -elOff.top;
 	}
 
+	/** get the left position */
 	let getPosDifLeft = () => {
+		// if there's no element, return 0
 		if (!el) {return 0;}
+
+		// get the position of the info element
 		let elOff = el.find(".info").position();
+		// get the width of the element
 		let elWidth = el.width();
+		// get the width of the main page container
 		let contWidth = angular.element("#page-container").width();
-		return (contWidth/2 - (elOff.left + elWidth/2)) * 100 / contWidth + "%";
+
+		// get the position of the center of the element
+		let elCenter = elOff.left + elWidth/2;
+		// the left position is half of the main container width minus the element center position as a percentage of the main container width
+		return (contWidth/2 - elCenter) * 100 / contWidth + "%";
 	}
 
 	return {top: getPosDifTop, left: getPosDifLeft}
 }
 
+/** get the properties of the parent */
 let getParentProps = (ctrl) => {
 	// if it doesn't have a parent, skip this part
 	if (ctrl.parentCtrl == undefined) {return;}
@@ -38,7 +55,7 @@ let getParentProps = (ctrl) => {
 	let useUrl = ctrl._$state.href(ctrl.pageState);
 	ctrl.parentInd = angular.element(`chart-component a[href='${useUrl}']`).parents("chart-circle");
 
-	// get the index of the parent element
+	// get the index of the parent element among its siblings
 	let index = ctrl.parentInd.parent().prevAll().length;
 
 	// find the offset
@@ -48,8 +65,10 @@ let getParentProps = (ctrl) => {
 	ctrl.parentMargin = pCtrl.perc(numShift * pCtrl.containerWidth  / 100);
 }
 
+/** Controller class for animated components */
 export default class AnimatedController {
 	constructor($element, $timeout, rootTlService, isMobileWidth, $state) {
+		// add injected services, etc. to the controller
 		this._$element = $element;
 		this._$timeout = $timeout;
 		this._rootTlService = rootTlService;
@@ -58,23 +77,32 @@ export default class AnimatedController {
 	}
 
 	$onInit() {
+		// immediately hide the element
 		this._$element.hide();
 	}
 
 	$postLink() {
+		// once everything's linked up and rendered
 		this._$timeout(() => {
+			// get the parent properties
 			getParentProps(this);
 
+			// show the element
 			this._$element.show();
+			// generate the timeline
 			this.generateTl();
+			// center the parent
 			this.centerParent();
+			// do the component-specific animations
 			this.doAnim(this._isMobileWidth());
 
+			// add the timeline to the timeline service
 			this._rootTlService.addToTl(this.tl);
 		})
 	}
 
 	generateTl() {
+		// make a new timeline and add the beginning marker
 		this.tl = new TimelineMax();
 		this.tl.add("beginning");
 	}
@@ -130,6 +158,7 @@ export default class AnimatedController {
 		}
 	}
 
+	/** center the parent node of this component */
 	centerParent() {
 		if (this.parentInd !== undefined) {
 			// make the timeline for centering the parent
@@ -164,5 +193,6 @@ export default class AnimatedController {
 		this.tl.from(this._$element.find(">.top"), animLength, {height: 0, ease: Linear.easeIn}, "afterCenterParent");
 	}
 
+	/** override this to add component-specific animations */
 	doAnim(isMobile) {}
 }

@@ -13,7 +13,7 @@
 </head>
 <body data-ng-app="main">
   <div id="up-arrow">
-    <a ng-if="upHref" ng-href="{{upHref}}"><img src="./images/arrow-up.png" alt="previous level"/></a>
+    <a ng-if="showUp()" ui-sref="^"><img src="./images/arrow-up.png" alt="previous level"/></a>
   </div>
   <div id="page-container">
     <div class="name enoch">
